@@ -203,10 +203,7 @@ main() {
   log "Install ElasticSearch..."
 
   # Start mysql services
-  #/usr/local/mysql/support-files/mysql.server start
-  #if [ ! -e ~/data/Backup/mysql_dump.sql ]; then
-  #  gunzip ~/data/Backup/mysql_dump.sql.gz
-  #fi
+  /usr/local/mysql/support-files/mysql.server start
   log "Start mysql server..."
 
   # Import mySQL dump from ~/data/Backup/mysql_dump.sql
@@ -219,23 +216,7 @@ main() {
   popd
   log "Decompress redis dump from ~/data/Backup..."
 
-  pushd $CLIPIT/tools/services/datamine
-  gzip -dc ~/data/Backup/datamine_vw_models.tgz | tar xvf -
-  popd
-  log "Decompress datamine_vw_models from ~/data/Backup..."
-
-  pushd $CLIPIT/tools/services/vowpal_wabbit/
-  ./vw_daemon.py $CLIPIT/development.ini start
-  popd
-  log "Start vowpal_wabbit daemon..."
-
-  pushd $CLIPIT/tools/services/customers/learn
-  gzip -dc ~/data/Backup/learn_vw_models.tgz | tar xvf -
-  popd
-  log "Decompress learn_vw_models from ~/data/Backup..."
-
   # Start required dependencies and/or services
-  #sudo -u $SUDO_USER $CLIPIT/tools/services/mongo_db/server.py $CLIPIT/development.ini start
   sudo -u $SUDO_USER $CLIPIT/tools/services/redis/redis.py $CLIPIT/development.ini start
   sudo -u $SUDO_USER $CLIPIT/tools/services/workers/mailer.py $CLIPIT/development.ini start || true
   sudo -u $SUDO_USER $CLIPIT/tools/services/workers/imager.py $CLIPIT/development.ini start || true
@@ -319,6 +300,9 @@ checkdependencies() {
       if [ $OS_Version = '10.10.5' ]; then
           #sudo installer -pkg MacPorts-2.3.4-10.10-Yosemite.pkg -target /
           log "MacPorts 2.3.4 is not installed, attempting install for Yosemite..."
+      elif [ $OS_Version = '10.11.3' ]; then
+          #sudo installer -pkg MacPorts-2.3.4-10.11-ElCapitan.pkg -target /
+          log "MacPorts 2.3.4 is not installed, attempting install for El Capitan..."
       elif [ $OS_Version = '10.11.2' ]; then
           #sudo installer -pkg MacPorts-2.3.4-10.11-ElCapitan.pkg -target /
           log "MacPorts 2.3.4 is not installed, attempting install for El Capitan..."
