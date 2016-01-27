@@ -4,23 +4,15 @@
 # Author		      : Ian Brodowski
 # Script Name     : dev_dependencies.sh
 # Script Purpose  :	Installs all dependencies as required by install.sh
+#                 :   Such as the following:
+#                 :   Xcode 7.2, Xcode command-line tools for Yosemite or El Capitan, mySQL 5.5.46, MacPorts 2.3.4, Homebrew 0.9.5 and Python 2.7 (via port)
 #
 # Last Update     : Tuesday, January 26, 2016
 #
 # Change History  :
 #   * 20160126    : Script inception
 #                 : 
-#                 : 
-#                 :
 #
-
-# Pre-requisites: 
-# OS X 10.10.5 or later; not OS X 10.11.x
-# Install Xcode and Xcode command line tools; open to accept license and install tools
-# Install MacPorts 2.3.4 for OS X 10.10.x (Yosemite)
-# Install Homebrew
-# Install MySQL 5.5.46 x86_64 for OS X 10.9 (Mavericks)
-
 
 log() {
 
@@ -69,7 +61,7 @@ checkdependencies() {
   else
     echo "Xcode and Command Line Tools are not installed, running Xcode wizard..."
     log "Xcode is not installed, attempting to install..."
-    # sudo xcode-select --install
+    sudo xcode-select --install
   fi
 
   # Install mySQL 5.5.46
@@ -83,7 +75,7 @@ checkdependencies() {
   else
     echo "mySQL 5.5.46 is not installed, running installation..."
     pushd $WEB/Website/Reflektion/ClipIt/tools/software/
-    # installer -pkg mysql-5.5.46-osx10.8-x86_64.pkg -target /
+    installer -pkg mysql-5.5.46-osx10.8-x86_64.pkg -target /
     popd
     log "mySQL 5.5.46 is not installed, attempting to install..."
   fi
@@ -102,10 +94,10 @@ checkdependencies() {
     echo "MacPorts 2.3.4 is not installed, running installation..."
       pushd $WEB/Website/Reflektion/ClipIt/tools/software/
       if [ $OS_Version = '10.10.5' ]; then
-         # sudo installer -pkg MacPorts-2.3.4-10.10-Yosemite.pkg -target /
+          sudo installer -pkg MacPorts-2.3.4-10.10-Yosemite.pkg -target /
           log "MacPorts 2.3.4 is not installed, attempting install for Yosemite..."
       elif [ $OS_Version = '10.11.2' ]; then
-         # sudo installer -pkg MacPorts-2.3.4-10.11-ElCapitan.pkg -target /
+          sudo installer -pkg MacPorts-2.3.4-10.11-ElCapitan.pkg -target /
           log "MacPorts 2.3.4 is not installed, attempting install for El Capitan..."
       fi
       log "MacPorts 2.3.4 is not installed, attempting install..."
@@ -124,9 +116,18 @@ checkdependencies() {
         fi
   else
     echo "Homebrew 0.9.5 is not installed, running installation..."
-    # sudo -H -u $SUDO_USER bash -c 'ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"'
+    sudo -H -u $SUDO_USER bash -c 'ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"'
     log "Homebrew 0.9.5 is not installed, attempting install..."
   fi
+
+  # Install Python 2.7 within ~/work/Webology/Website/Reflektion/bin
+  pushd $WEB/Website/Reflektion/bin/
+  echo "Changing working directory to ~/work/Webology/Website/Reflektion/bin..."
+  log "Changing working directory to ~/work/Webology/Website/Reflektion/bin..."
+  port install python27
+  log "Installing Python 2.7 into ~/work/Webology/Website/Reflektion/bin via port..."
+  echo "Installing Python 2.7 into ~/work/Webology/Website/Reflektion/bin via port..."
+  popd
 
 }
 
@@ -139,11 +140,15 @@ if [ $UID != 0 ]; then
   exit 1
 fi
 
-if [[ ${OS_Version} == 10.11.2 ]]; then
+if [[ ${OS_Version} == 10.11.3 ]]; then
    echo "Detected valid OS X version, ${OS_Version}, continuing..."
    log "Supported operating system version detected..."
    checkdependencies
    #main
+elif [[ ${OS_Version} == 10.10.5]]; then
+   echo "Detected valid OS X version, ${OS_Version}, continuing..."
+   log "Supported operating system version detected..." 
+   checkdependencies
 else
    echo "Detected invalid OS X version, ${OS_Version}, exiting..."
    log "Unsupported operating system version detected..."
