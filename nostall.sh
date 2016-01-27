@@ -6,7 +6,8 @@
 # Last Update     : Tuesday, January 26, 2016
 #
 # Change History  :
-#   * 20160126    : Ran into an issue with pytz, had to add pip install --upgrade pytz to fix the issue
+#   * 20160126    : All dependencies must be installed via install_dependencies.sh, before this script is executed
+#                 : Ran into an issue with pytz, had to add pip install --upgrade pytz to fix the issue
 #                 : Ran into an issue with creating /data/db under root, removed preappended sudo command
 #                 : 
 #                 :
@@ -39,11 +40,12 @@
 # 
 
 # Pre-requisites: 
-# OS X 10.10.5 or later; not OS X 10.11.x
-# Install Xcode and Xcode command line tools; open to accept license and install tools
+# OS X 10.10.5 or later
+# Install Xcode and Xcode command-line tools; open to accept license and install tools
 # Install MacPorts 2.3.4 for OS X 10.10.x (Yosemite)
 # Install Homebrew
 # Install MySQL 5.5.46 x86_64 for OS X 10.9 (Mavericks)
+# Install python27 via MacPorts 2.3.4
 
 log() {
 
@@ -72,11 +74,10 @@ main() {
   echo "Running main functions..."
 
   # Install py-pip
-  #port install py-pip
+  port install py-pip
   log "Installing py-pip via port..."
 
   # Install virtualenv and set system-site-packages to ~/work/Webology/Website/Reflektion
-  #/opt/local/Library/Frameworks/Python.framework/Versions/2.7/bin/easy_install virtualenv==1.10.1
   curl -O https://pypi.python.org/packages/source/v/virtualenv/virtualenv-1.10.1.tar.gz
   tar xvfz virtualenv-1.10.1.tar.gz
   cd virtualenv-1.10.1
@@ -101,7 +102,7 @@ main() {
   log "Activate virtual environment"
 
 # Install dependencies using pip
-  port install python27
+# port install python27 # python27 must be installed via install_dependencies.sh
   sudo -H -u $SUDO_USER $BIN/easy_install pip
   sudo -H -u $SUDO_USER $BIN/pip install --upgrade pip
   sudo -H -u $SUDO_USER $BIN/pip install --upgrade setuptools
