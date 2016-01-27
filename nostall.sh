@@ -320,7 +320,7 @@ checkdependencies() {
       HomebrewInstalled=$(brew --version | awk '{print $2}')
       if [ $HomebrewInstalled == "0.9.5" ]; then
           echo "Homebrew 0.9.5 is installed."
-          log "Homebrew 0.9.5 is installed"
+          log "Homebrew 0.9.5 is installed."
       fi
   else
     echo "Homebrew 0.9.5 is not installed, running installation..."
