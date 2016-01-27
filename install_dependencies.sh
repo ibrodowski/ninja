@@ -140,12 +140,12 @@ if [ $UID != 0 ]; then
   exit 1
 fi
 
-if [[ ${OS_Version} == 10.11.3 ]]; then
+if [[ ${OS_Version} == 10.10.5 ]]; then
    echo "Detected valid OS X version, ${OS_Version}, continuing..."
    log "Supported operating system version detected..."
    checkdependencies
    #main
-elif [[ ${OS_Version} == 10.10.5]]; then
+elif [[ ${OS_Version} == 10.11.3]]; then
    echo "Detected valid OS X version, ${OS_Version}, continuing..."
    log "Supported operating system version detected..." 
    checkdependencies
