@@ -1,15 +1,18 @@
 #!/bin/bash
 
 #
-# Author		      : Ian Brodowski
-# Script Name     : dev_dependencies.sh
+# Author		  : Ian Brodowski
+# Script Name     : install_dependencies.sh
 # Script Purpose  :	Installs all dependencies as required by install.sh
 #                 :   Such as the following:
 #                 :   Xcode 7.2, Xcode command-line tools for Yosemite or El Capitan, mySQL 5.5.46, MacPorts 2.3.4, Homebrew 0.9.5 and Python 2.7 (via port)
 #
-# Last Update     : Tuesday, January 26, 2016
+# Last Update     : Friday, January 29, 2016
 #
 # Change History  :
+#   * 20160129    : Refinements
+#                 : 
+#
 #   * 20160126    : Script inception
 #                 : 
 #
@@ -39,18 +42,18 @@ checkdependencies() {
   echo "Checking mandatory dependencies..."
 
   # Update directory paths for all files in ~/work/Webology/Website/Reflektion/bin
-  log "Update directory paths in files located in bin..."
-  Readline=$(head -1 ~/work/Webology/Website/Reflektion/bin/asadmin)
-  if [ $Readline == "#!/Users/reflektion/work/Webology/Website/Reflektion/bin/python" ]; then
-    echo "The directory paths for all files in \"~/work/Webology/Website/Reflektion/bin\" has not been updated, applying changes..."
-    pushd $WEB/Website/Reflektion/
-    perl -pi -w -e 's/reflektion/$ENV{'LOGNAME'}/g;' bin/*
-    popd
-    log "Directory paths update completed."
-  else
-    echo "The directory paths for all files in \"~/work/Webology/Website/Reflektion/bin\" have already been updated."
-    log "The directory paths for all files in bin have already been updated."
-  fi
+  #log "Update directory paths in files located in bin..."
+  #Readline=$(head -1 ~/work/Webology/Website/Reflektion/bin/asadmin)
+  #if [ $Readline == "#!/Users/reflektion/work/Webology/Website/Reflektion/bin/python" ]; then
+  #  echo "The directory paths for all files in \"~/work/Webology/Website/Reflektion/bin\" has not been updated, applying changes..."
+  #  pushd $WEB/Website/Reflektion/
+  #  perl -pi -w -e 's/reflektion/$ENV{'LOGNAME'}/g;' bin/*
+  #  popd
+  #  log "Directory paths update completed."
+  #else
+  # echo "The directory paths for all files in \"~/work/Webology/Website/Reflektion/bin\" have already been updated."
+  # log "The directory paths for all files in bin have already been updated."
+  #fi
 
   # Install Xcode and Command Line Tools
   log "Checking Xcode installation..."
@@ -58,10 +61,20 @@ checkdependencies() {
   if [ $XcodeInstalled == "/Applications/Xcode.app/Contents/Developer" ]; then
     echo "Xcode and Command Line Tools are installed."
     log "Xcode is installed."
+    xcrun cc
+    echo "Installing Xcode Command-line tools..."
+    pushd $WEB/Website/Reflektion/ClipIt/tools/software/
+      if [ $OS_Version == '10.10.5' ]; then
+          installer -pkg Command\ Line\ Tools\ \(OS\ X\ 10.10\).pkg -target /
+          log "Installing Command Line Tools for Yosemite..."
+      elif [ $OS_Version == '10.11.3' ]; then
+          installer -pkg Command\ Line\ Tools\ \(OS\ X\ 10.11\).pkg -target /
+          log "Installing Command Line Tools for El Capitan..."
+      fi
   else
     echo "Xcode and Command Line Tools are not installed, running Xcode wizard..."
     log "Xcode is not installed, attempting to install..."
-    sudo xcode-select --install
+    sudo xcode-select --install || true
   fi
 
   # Install mySQL 5.5.46
@@ -93,10 +106,10 @@ checkdependencies() {
   else
     echo "MacPorts 2.3.4 is not installed, running installation..."
       pushd $WEB/Website/Reflektion/ClipIt/tools/software/
-      if [ $OS_Version = '10.10.5' ]; then
+      if [ $OS_Version == '10.10.5' ]; then
           sudo installer -pkg MacPorts-2.3.4-10.10-Yosemite.pkg -target /
           log "MacPorts 2.3.4 is not installed, attempting install for Yosemite..."
-      elif [ $OS_Version = '10.11.2' ]; then
+      elif [ $OS_Version == '10.11.2' ]; then
           sudo installer -pkg MacPorts-2.3.4-10.11-ElCapitan.pkg -target /
           log "MacPorts 2.3.4 is not installed, attempting install for El Capitan..."
       fi
@@ -125,8 +138,8 @@ checkdependencies() {
   echo "Changing working directory to ~/work/Webology/Website/Reflektion/bin..."
   log "Changing working directory to ~/work/Webology/Website/Reflektion/bin..."
   port install python27
-  log "Installing Python 2.7 into ~/work/Webology/Website/Reflektion/bin via port..."
   echo "Installing Python 2.7 into ~/work/Webology/Website/Reflektion/bin via port..."
+  log "Installing Python 2.7 into ~/work/Webology/Website/Reflektion/bin via port..."
   popd
 
 }
