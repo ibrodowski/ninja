@@ -1,0 +1,19 @@
+#
+# Original Author : Unknown
+# Current Author  : Ian Brodowski
+# Last Update     : Wednesday, February 3, 2016
+# Script Name     : requirements-upgrade.txt
+# Script Purpose  : Installs required upgrades for pip, pytz and setuptools
+#
+# Change History  :
+#   * 20160203    : Requirements file for upgrading pip, pytz and setuptools
+#                 : 
+#                 :
+#
+
+#
+# Requirments without version specifiers
+#
+pip
+setuptools
+pytz 
