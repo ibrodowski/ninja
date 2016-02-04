@@ -286,6 +286,7 @@ checkdependencies() {
   #mySQLInstalled=$(mysql --version | awk '{print $5}' | sed 's/,//g')
   log "Checking mySQL installation..."
   mysqlbinary="/usr/local/mysql/bin/mysql"
+    echo "mysQL is installed, checking version..."
   if [ -f $mysqlbinary ]; then
       mySQLInstalled=$(mysql --version | awk -F ',' '{print $1}' | awk '{print $NF}')
       if [ $mySQLInstalled == "5.5.46" ]; then
