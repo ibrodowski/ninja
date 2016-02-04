@@ -70,6 +70,7 @@ main() {
   echo "Running main functions..."
   log "Running main functions..."
 
+
   # Set local vars
   #local WEBOLOGY
   WEBOLOGY=~/work/Webology
@@ -79,6 +80,7 @@ main() {
 
   # Install py-pip
   port install py-pip
+  echo "Installing py-pip via port..."
   log "Installing py-pip via port..."
 
   # Install virtualenv and set system-site-packages to ~/work/Webology/Website/Reflektion
@@ -88,6 +90,7 @@ main() {
   python setup.py install
   cd -
   sudo -H -u $SUDO_USER bash -c 'UserName=$(whoami) || /Users/$UserName/work/Webology/Website/Reflektion/bin/virtualenv --system-site-packages /Users/$UserName/work/Website/Reflektion'
+  echo "Installing virtual-env and setting system-site-packages..."
   log "Installing virtual-env and setting system-site-packages..."
 
   # Install dependencies using MacPorts
@@ -99,16 +102,19 @@ main() {
   port install lcms
   port install nodejs
   port install npm
-  log "Installing boost, curl, jpeg, libevent, libpng, lcms, nodejs, npm  and python27 via port..."
+  echo "Installing boost, curl, jpeg, libevent, libpng, lcms, nodejs and npm via port..."
+  log "Installing boost, curl, jpeg, libevent, libpng, lcms, nodejs and npm via port..."
 
   # Activate virtual environment
   source $BIN/activate
+  echo "Activate virtual environment"
   log "Activate virtual environment"
 
 # Install dependencies using pip
   pushd $BIN
   port install python27
   sudo -H -u $SUDO_USER easy_install pip
+  sudo -H -u $SUDO_USER easy_install pytz
   sudo -H -u $SUDO_USER pip --upgrade -r requirements-upgrade.txt
   sudo -H -u $SUDO_USER pip install -r requirements.txt
   popd
@@ -139,21 +145,25 @@ main() {
   #sudo -H -u $SUDO_USER $BIN/pip install planout==0.5
   #sudo -H -u $SUDO_USER $BIN/pip install geoip2
   #sudo -H -u $SUDO_USER $BIN/pip install gevent==0.13.8
-  log "Installing cython, redis, pytz upgrade, scipy, scikit-learn, beaker_extensions, ua-parser, PIL, scipy, numpy, jsonschema, distribute, funcsigs, lxml, pycurl, gensim, pyramid, setuptools upgrade, pbr, mock, matplotlib, user-agents, ua-parser, newrelic, pyes, planout, geoip2, gevent..."
+  echo "Installing mandatory pip dependencies via requirements file..."
+  log "Installing mandatory pip dependencies via requirements file..."
 
   # Install dependencies using Homebrew
   sudo -H -u $SUDO_USER brew install freetype
   sudo -H -u $SUDO_USER brew install thrift
   sudo -H -u $SUDO_USER brew install homebrew/versions/mongodb24
   sudo -H -u $SUDO_USER brew install homebrew/versions/redis26
+  echo "Installing freetype, thrift, mongodb24 and redis26 via brew..."
   log "Installing freetype, thrift, mongodb24 and redis26 via brew..."
 
   # Install phantomjs with npm
   npm -g install phantomjs
+  echo "Installing phantomjs via npm..."
   log "Installing phantomjs via npm..."
 
   # Create symlink for freetype under /opt/local/include/freetype
   ln -s /opt/local/include/freetype2 /opt/local/include/freetype
+  echo "Creating symlink for freetype..."
   log "Creating symlink for freetype..."
 
   #LINE1="export PATH=\${PATH}:/usr/local/mysql/bin:/opt/local/bin:/opt/local/sbin"
@@ -178,6 +188,7 @@ main() {
 
   # Invoke setup.py after installing all required dependencies
   sudo -H -u $SUDO_USER $BIN/pip install -e $CLIPIT # or $BIN/pip install -e .
+  echo "Invoke setup.py after installing all required dependencies"
   log "Invoke setup.py after installing all required dependencies"
 
   # Decompress mongo dump into /data/db
@@ -187,6 +198,7 @@ main() {
   pushd /data/db
   gzip -dc ~/data/Backup/mongo_dump.tgz | tar xvf -
   popd
+  echo "Decompress mongo dump into /data/db..."
   log "Decompress mongo dump into /data/db..."
 
   # Start mongodb services and add users
@@ -201,12 +213,14 @@ main() {
   #db.addUser('rfk', 'rfk789')
   #exit
   #EOF
+  echo "Start mongodb and create users..."
   log "Start mongodb and create users..."
 
   # Install ElasticSearch
   cd tools/services/elasticsearch/
   ./install_elasticsearch.sh
   cd -
+  echo "Install ElasticSearch..."
   log "Install ElasticSearch..."
 
   # Start mysql services
@@ -215,40 +229,44 @@ main() {
 
   # Import mySQL dump from ~/data/Backup/mysql_dump.sql
   sudo -H -u $SUDO_USER mysql -u root -h localhost < ~/data/Backup/mysql_dump.sql
+  echo "Import mySQL dump from ~/data/Backup..."
   log "Import mySQL dump from ~/data/Backup..."
 
   mkdir -p $CLIPIT/tools/services/var/storage/redis/
   pushd $CLIPIT/tools/services/var/storage/redis/
   gzip -dc ~/data/Backup/redis_dump.tgz | tar xvf -
   popd
+  echo "Decompress redis dump from ~/data/Backup..."
   log "Decompress redis dump from ~/data/Backup..."
 
   # Start required dependencies and/or services
   sudo -u $SUDO_USER $CLIPIT/tools/services/redis/redis.py $CLIPIT/development.ini start
   sudo -u $SUDO_USER $CLIPIT/tools/services/workers/mailer.py $CLIPIT/development.ini start || true
   sudo -u $SUDO_USER $CLIPIT/tools/services/workers/imager.py $CLIPIT/development.ini start || true
-  log "Starting mongodb, redis, mailer and imager..."
+  echo "Starting redis, mailer and imager..."
+  log "Starting redis, mailer and imager..."
 
   # Configure thrift
   thrift --gen py -out . thriftService.thrift
+  echo "Configuring thrift..."
   log "Configuring thrift..."
 
   # Updated connection.py in ~/work/Webology/Website/Reflektion/lib/python2.7/site-packages/boto/s3/
   perl -pi -w -e 's/calling_format=DefaultCallingFormat/calling_format=OrdinaryCallingFormat()/g;' ~/work/Webology/Website/Reflektion/lib/python2.7/site-packages/boto/s3/connection.py
+  echo "Updating connection.py in ~/work/Webology/Website/Reflektion/lib/python2.7/site-packages/boto/s3/..."
   log "Updating connection.py in ~/work/Webology/Website/Reflektion/lib/python2.7/site-packages/boto/s3/..."
 
 }
 
 checkdependencies() {
 
+  echo "Checking mandatory dependencies..."
   log "Checking dependencies..."
 
   # Set local vars
   local WEB
   WEB=~/work/Webology
   log "Setting local variables for dependencies check..."
-
-  echo "Checking mandatory dependencies..."
 
   # Update directory paths for all files in ~/work/Webology/Website/Reflektion/bin
   log "Update directory paths in files located in bin..."
