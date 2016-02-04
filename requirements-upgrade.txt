@@ -12,7 +12,7 @@
 #
 
 #
-# Requirments without version specifiers
+# Upgrade requirments without version specifiers
 #
 pip
 setuptools
