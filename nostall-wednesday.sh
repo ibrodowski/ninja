@@ -140,7 +140,7 @@ main() {
   #sudo -H -u $SUDO_USER $BIN/pip install planout==0.5
   #sudo -H -u $SUDO_USER $BIN/pip install geoip2
   #sudo -H -u $SUDO_USER $BIN/pip install gevent==0.13.8
-  log "Installing cython, redis, pytz upgrade, scipy, scikit-learn, beaker_extensions, ua-parser, PIL, scipy, numpy, jsonschema, distribute, funcsigs, lxml, pycurl, gensim, pyramid, setuptools upgrade, pbr, mock, matplotlib, user-agents, ua-parser, newrelic, pyes, planout, geoip2, gevent..."
+  log "Installing mandatory pip dependencies via requirements file..."
 
   # Install dependencies using Homebrew
   sudo -H -u $SUDO_USER brew install freetype
