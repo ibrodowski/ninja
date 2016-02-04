@@ -107,10 +107,12 @@ main() {
   log "Activate virtual environment"
 
 # Install dependencies using pip
-# port install python27 # python27 must be installed via install_dependencies.sh
-  sudo -H -u $SUDO_USER $BIN/easy_install pip
-  sudo -H -u $SUDO_USER $BIN/pip --upgrade -r requirements-upgrade.txt
-  sudo -H -u $SUDO_USER $BIN/pip install -r requirements.txt
+  pushd $BIN
+  port install python27
+  sudo -H -u $SUDO_USER easy_install pip
+  sudo -H -u $SUDO_USER pip --upgrade -r requirements-upgrade.txt
+  sudo -H -u $SUDO_USER pip install -r requirements.txt
+  popd
   #sudo -H -u $SUDO_USER $BIN/pip install cython
   #sudo -H -u $SUDO_USER $BIN/pip install redis
   #sudo -H -u $SUDO_USER $BIN/pip install pytz
