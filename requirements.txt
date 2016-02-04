@@ -14,8 +14,8 @@
 #
 # Mandatory requirements without version specifiers
 #
-easy_install pip
-pytz
+#easy_install pip
+#pytz
 
 #
 # Upgrades
