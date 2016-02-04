@@ -14,11 +14,6 @@
 #
 # Mandatory requirements without version specifiers
 #
-pytz
-
-#
-# Requirments without version specifiers
-#
 cython
 redis
 distribute
