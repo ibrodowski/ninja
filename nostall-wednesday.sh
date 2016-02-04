@@ -110,6 +110,7 @@ main() {
   pushd $BIN
   port install python27
   sudo -H -u $SUDO_USER easy_install pip
+  sudo -H -u $SUDO_USER pip install pytz
   sudo -H -u $SUDO_USER pip --upgrade -r requirements-upgrade.txt
   sudo -H -u $SUDO_USER pip install -r requirements.txt
   popd
