@@ -8,6 +8,7 @@
 # Change History  :
 #   * 20160203    : Include requirements.txt file for install pip dependencies
 #                 : Modified sudo command to include -H for all brew install dependencies
+#                 : Found an issue with -f, should be -e when looking for an application (e.g., /Applications/Xcode.app)
 #                 : 
 #                 : 
 #                 
@@ -286,7 +287,7 @@ checkdependencies() {
   log "Checking Xcode installation..."
   XcodeInstalled=$(xcode-select -p)
   xcodeapp="/Applications/Xcode.app"
-  if [ -f $xcodeapp ]; then
+  if [ -e $xcodeapp ]; then
       if [ $XcodeInstalled == "/Applications/Xcode.app/Contents/Developer" ]; then
         echo "Xcode and Command Line Tools are installed."
         log "Xcode is installed."
