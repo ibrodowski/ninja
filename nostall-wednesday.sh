@@ -67,7 +67,9 @@ log() {
 
 main() {
 
+  echo "Running main functions..."
   log "Running main functions..."
+
 
   # Set local vars
   #local WEBOLOGY
@@ -75,8 +77,6 @@ main() {
   BIN=$WEBOLOGY/Website/Reflektion/bin
   CLIPIT=$WEBOLOGY/Website/Reflektion/ClipIt
   log "Setting local varibles for main functions..."
-
-  echo "Running main functions..."
 
   # Install py-pip
   port install py-pip
@@ -110,7 +110,6 @@ main() {
   pushd $BIN
   port install python27
   sudo -H -u $SUDO_USER easy_install pip
-  sudo -H -u $SUDO_USER pip install pytz
   sudo -H -u $SUDO_USER pip --upgrade -r requirements-upgrade.txt
   sudo -H -u $SUDO_USER pip install -r requirements.txt
   popd
@@ -141,7 +140,7 @@ main() {
   #sudo -H -u $SUDO_USER $BIN/pip install planout==0.5
   #sudo -H -u $SUDO_USER $BIN/pip install geoip2
   #sudo -H -u $SUDO_USER $BIN/pip install gevent==0.13.8
-  log "Installing mandatory pip dependencies via requirements file..."
+  log "Installing cython, redis, pytz upgrade, scipy, scikit-learn, beaker_extensions, ua-parser, PIL, scipy, numpy, jsonschema, distribute, funcsigs, lxml, pycurl, gensim, pyramid, setuptools upgrade, pbr, mock, matplotlib, user-agents, ua-parser, newrelic, pyes, planout, geoip2, gevent..."
 
   # Install dependencies using Homebrew
   sudo -H -u $SUDO_USER brew install freetype
@@ -287,7 +286,6 @@ checkdependencies() {
   #mySQLInstalled=$(mysql --version | awk '{print $5}' | sed 's/,//g')
   log "Checking mySQL installation..."
   mysqlbinary="/usr/local/mysql/bin/mysql"
-    echo "mysQL is installed, checking version..."
   if [ -f $mysqlbinary ]; then
       mySQLInstalled=$(mysql --version | awk -F ',' '{print $1}' | awk '{print $NF}')
       if [ $mySQLInstalled == "5.5.46" ]; then
