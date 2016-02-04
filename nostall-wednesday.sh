@@ -70,7 +70,6 @@ main() {
   echo "Running main functions..."
   log "Running main functions..."
 
-
   # Set local vars
   #local WEBOLOGY
   WEBOLOGY=~/work/Webology
