@@ -17,11 +17,6 @@
 pytz
 
 #
-# Upgrades
-#
---upgrade -r requirements-upgrade.txt
-
-#
 # Requirments without version specifiers
 #
 cython
