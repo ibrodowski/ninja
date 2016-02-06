@@ -3,7 +3,7 @@
 # Current Author  : Ian Brodowski
 # Last Update     : Friday, February 5, 2016
 # Script Name     : requirements.txt
-# Script Purpose  : Installs all pip dependencies
+# Script Purpose  : Installs all pip dependencies, this file needs to be in ~/work/Webology/Website/Reflektion/ClipIt
 #
 # Change History  :
 #   * 20160205    : Removed duplicate entry for scipy
