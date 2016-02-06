@@ -7,6 +7,8 @@
 #
 # Change History  :
 #   * 20160205    : Removed duplicate entry for scipy
+#                 : This file removes the dependency on package_install.sh
+#                 :   Do not update package_install.sh with new depenencies, instead update this file
 #                 : 
 #                 :
 #   * 20160203    : Requirements file for pip dependencies
