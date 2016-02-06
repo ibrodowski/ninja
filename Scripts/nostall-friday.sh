@@ -12,6 +12,7 @@
 #                 : Moved global variables to the top of the script before any listed functions
 #                 : Added new $HOMEDIR variable to find currently logged-in user's home directory
 #                 : Removed py-pip and virtualenv as installation within in this script and moved over to install_dependencies.sh
+#                 : Added thrift widget benchmark
 #                 : 
 #        
 #   * 20160204    : Found an issue when adding admin and rfk users to mongodb; the db.auth command isn't passed (which is why it fails)
@@ -216,6 +217,12 @@ main() {
   thrift --gen py -out . thriftService.thrift
   echo "Configuring thrift..."
   log "Configuring thrift..."
+
+  # Configure thrift widget benchmark
+  popd $CLIPIT/tools/services/customers/widget_benchmark
+  thrift --gen py -out . WidgetBenchmark.thrift
+  echo "Configuring thrift widget benchmark..."
+  pushd
 
   # Updated connection.py in ~/work/Webology/Website/Reflektion/lib/python2.7/site-packages/boto/s3/
   perl -pi -w -e 's/calling_format=DefaultCallingFormat/calling_format=OrdinaryCallingFormat()/g;' ~/work/Webology/Website/Reflektion/lib/python2.7/site-packages/boto/s3/connection.py
