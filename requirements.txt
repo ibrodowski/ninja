@@ -1,11 +1,14 @@
 #
 # Original Author : Unknown
 # Current Author  : Ian Brodowski
-# Last Update     : Wednesday, February 3, 2016
+# Last Update     : Friday, February 5, 2016
 # Script Name     : requirements.txt
 # Script Purpose  : Installs all pip dependencies
 #
 # Change History  :
+#   * 20160205    : Removed duplicate entry for scipy
+#                 : 
+#                 :
 #   * 20160203    : Requirements file for pip dependencies
 #                 : 
 #                 :
@@ -29,7 +32,6 @@ geoip2
 #
 scipy==0.14.0
 scikit-learn==0.15.0
-scipy==0.14.0
 numpy==1.8.1
 jsonschema==2.4.0
 lxml==2.3.5
