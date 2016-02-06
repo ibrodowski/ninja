@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-# Author		      : Ian Brodowski
+# Author		  : Ian Brodowski
 # Script Name     : install_dependencies.sh
 # Script Purpose  :	Installs all dependencies as required by install.sh
 #                 :   Such as the following:
