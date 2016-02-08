@@ -223,7 +223,7 @@ checkdependencies() {
   # Install Java Development Kit
   log "Checking Java Development Kit installation…"
   jdkbinary="/usr/bin/javac"
-    if [ -f $jfkbinary ]; then
+    if [ -f $jdkbinary ]; then
       #jreinstalled=$(javac -version 2>&1 | awk '{print $2}')
       #if [ $jreinstalled = "1.8.0_73" ]; then
       #  echo "Java Development Kit 1.8.0_73 is installed."
