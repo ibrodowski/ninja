@@ -119,7 +119,7 @@ main() {
   log "Activate virtual environment"
 
 # Install dependencies using pip
-  port install python27
+  #port install python27
   sudo -H -u $SUDO_USER $BIN/easy_install pip
   sudo -H -u $SUDO_USER $BIN/pip install --upgrade pip
   sudo -H -u $SUDO_USER $BIN/pip install --upgrade setuptools
