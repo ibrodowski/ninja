@@ -1,4 +1,4 @@
 # ninja
 vanish
 --
-o genki desu ka?
+ogenki desu ka?
