@@ -3,9 +3,12 @@
 #
 # Original Author : Unknown
 # Current Author  : Ian Brodowski
-# Last Update     : Thursday, February 11, 2016
+# Last Update     : Friday, February 12, 2016
 #
 # Change History  :
+#   * 20160212    : Moved variables for all functions under global variables section at the beginning of the script
+#                 :
+#
 #   * 20160211    : Merged install_dependencies.sh as installdependencies()
 #                 : Added Imaging-1.1.7.tar.gz and pywapi-0.3.8.tar.gz
 #                 : Corrected missing } for log() and main()
@@ -90,6 +93,11 @@
 OS_Version=$(sw_vers -productVersion)
 LoggedInUser="`python -c 'from SystemConfiguration import SCDynamicStoreCopyConsoleUser; import sys; username = (SCDynamicStoreCopyConsoleUser(None, None, None) or [None])[0]; username = [username,""][username in [u"loginwindow", None, u""]]; sys.stdout.write(username + "\n");'`"
 HOMEDIR=$(dscl . -read /Users/"$LoggedInUser" NFSHomeDirectory | awk -F':' 'END{gsub(/^[ \t]+/,"",$NF); printf "%s", $NF }')
+WEBOLOGY="$HOMEDIR"/work/Webology
+BIN=$WEBOLOGY/Website/Reflektion/bin
+CLIPIT=$WEBOLOGY/Website/Reflektion/ClipIt
+WEB="$HOMEDIR"/work/Webology
+RFK=/Library/RFK
 
 log() {
 
@@ -103,11 +111,6 @@ log() {
 }
 
 installdependencies() {
-
-  # Set function variables
-  WEB="$HOMEDIR"/work/Webology
-  RFK=/Library/RFK
-  log "Setting local variables for dependencies check..."
 
   echo "Checking mandatory dependencies..."
   log "Checking mandatory dependencies..."
@@ -268,10 +271,6 @@ checkdependencies() {
   echo "Checking mandatory dependencies..."
   log "Checking dependencies..."
 
-  # Set local vars
-  WEB="$HOMEDIR"/work/Webology
-  log "Setting local variables for dependencies check..."
-
   # Check for Xcode.app
   log "Checking Xcode installation..."
   XcodeInstalled=$(xcode-select -p)
@@ -378,12 +377,6 @@ main() {
 
   echo "Running main functions..."
   log "Running main functions..."
-
-  # Set function variables
-  WEBOLOGY="$HOMEDIR"/work/Webology
-  BIN=$WEBOLOGY/Website/Reflektion/bin
-  CLIPIT=$WEBOLOGY/Website/Reflektion/ClipIt
-  log "Setting local varibles for main functions..."
 
   # Install dependencies using MacPorts
   port install boost
