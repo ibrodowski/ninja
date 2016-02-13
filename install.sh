@@ -514,7 +514,7 @@ main() {
   echo "Configuring thrift widget benchmark..."
   popd
 
-  # Updated connection.py in ~/work/Webology/Website/Reflektion/lib/python2.7/site-packages/boto/s3/
+  # Update connection.py in ~/work/Webology/Website/Reflektion/lib/python2.7/site-packages/boto/s3/
   perl -pi -w -e 's/calling_format=DefaultCallingFormat/calling_format=OrdinaryCallingFormat()/g;' ~/work/Webology/Website/Reflektion/lib/python2.7/site-packages/boto/s3/connection.py
   echo "Updating connection.py in ~/work/Webology/Website/Reflektion/lib/python2.7/site-packages/boto/s3/..."
   log "Updating connection.py in ~/work/Webology/Website/Reflektion/lib/python2.7/site-packages/boto/s3/..."
