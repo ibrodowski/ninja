@@ -390,7 +390,7 @@ main() {
 
   # Install dependencies using MacPorts
   port install boost
-  port install curl # unsure if this is required since there's a system level version available
+  port install curl # required for pycurl compilation
   port install jpeg
   port install libevent
   port install libpng
