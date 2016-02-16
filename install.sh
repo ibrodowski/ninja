@@ -3,9 +3,12 @@
 #
 # Original Author : Unknown
 # Current Author  : Ian Brodowski
-# Last Update     : Friday, February 12, 2016
+# Last Update     : Tuesday, February 16, 2016
 #
 # Change History  :
+#   * 20160216    : Modify setup.py to include explicit version specifiers for pyramid_beaker==0.8, pyramid_debugtoolbar==1.0.6 and pyramid_tm==0.7
+#                 :
+#
 #   * 20160212    : Moved variables for all functions under global variables section at the beginning of the script
 #                 :
 #
@@ -263,6 +266,13 @@ installdependencies() {
       installer -pkg JDK\ 8\ Update\ 73.pkg -target /
       popd
     fi
+    
+  # Update setup.py to include explicit versions specifiers for pyramid_beaker, pyramid_debugtoolbar and pyramid_tm
+  echo "Updating setup.py to include explicit version specifiers for pyramid_beaker, pyramid_debugtoolbar and pyramid_tm"
+  log "Updating setup.py to include explicit version specifiers for pyramid_beaker, pyramid_debugtoolbar and pyramid_tm"
+  perl -pi -w -e 's/pyramid_beaker/pyramid_beaker==0.8/g;' "$HOMEDIR"/work/Webology/Website/Reflektion/ClipIt/setup.py
+  perl -pi -w -e 's/pyramid_debugtoolbar/pyramid_debugtoolbar==1.0.6/g;' "$HOMEDIR"/work/Webology/Website/Reflektion/ClipIt/setup.py
+  perl -pi -w -e 's/pyramid_tm/pyramid_tm==0.7/g;' "$HOMEDIR"/work/Webology/Website/Reflektion/ClipIt/setup.py
 
 }
 
