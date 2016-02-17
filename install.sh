@@ -7,7 +7,7 @@
 #
 # Change History  :
 #   * 20160216    : Modify setup.py to include explicit version specifiers for pyramid_beaker==0.8, pyramid_debugtoolbar==1.0.6 and pyramid_tm==0.7
-#                 :
+#                 : Added check to determine the existence of /Library/RFK, if it does not exist, exit and prompt user
 #
 #   * 20160212    : Moved variables for all functions under global variables section at the beginning of the script
 #                 :
@@ -100,7 +100,7 @@ WEBOLOGY="$HOMEDIR"/work/Webology
 BIN=$WEBOLOGY/Website/Reflektion/bin
 CLIPIT=$WEBOLOGY/Website/Reflektion/ClipIt
 WEB="$HOMEDIR"/work/Webology
-RFK=/Library/RFK
+RFK="/Library/RFK"
 
 log() {
 
@@ -117,6 +117,20 @@ installdependencies() {
 
   echo "Checking mandatory dependencies..."
   log "Checking mandatory dependencies..."
+
+  # Check for /Library/RFK, if it does not exist, exit and prompt user
+  If [ -e $RFK ]; then
+
+    echo "Found required RFK Software directory under /Library..."
+    log "Found required RFK Software directory under /Library..."
+
+  else
+
+    echo "Unable to locate required RFK Software directory under /Library, please run RFK Software.pkg, prior to running this script..."
+    log "Unable to locate required RFK Software directory under /Library, please run RFK Software.pkg, prior to running this script..."
+    exit 3
+
+  fi
 
   # Install Xcode and Command Line Tools
   log "Checking Xcode installation..."
@@ -147,7 +161,7 @@ installdependencies() {
   else
     echo "Xcode is not installed, please install Xcode..."
     log "Xcode is not installed, please install Xcode..."
-    exit 3
+    exit 4
   fi
 
   # Install mySQL 5.5.46
@@ -266,7 +280,7 @@ installdependencies() {
       installer -pkg JDK\ 8\ Update\ 73.pkg -target /
       popd
     fi
-    
+
   # Update setup.py to include explicit versions specifiers for pyramid_beaker, pyramid_debugtoolbar and pyramid_tm
   echo "Updating setup.py to include explicit version specifiers for pyramid_beaker, pyramid_debugtoolbar and pyramid_tm"
   log "Updating setup.py to include explicit version specifiers for pyramid_beaker, pyramid_debugtoolbar and pyramid_tm"
@@ -293,7 +307,7 @@ checkdependencies() {
   else
       echo "Xcode is not installed, prompting user..."
       echo "Please manually install Xcode.app and the Xcode Command Line Tools before running this script..."
-      exit 3
+      exit 5
       log "Xcode is not installed, prompting user..."
       log "Please manually install Xcode.app and the Xcode Command Line Tools before running this script..."
   fi
@@ -311,7 +325,7 @@ checkdependencies() {
   else
       echo "mySQL 5.5.46 is not installed, prompting user..."
       echo "Please run the install-dependencies.sh script before running this script..."
-      exit 4
+      exit 6
       log "mySQL 5.5.46 is not installed, prompting user..."
   fi
 
@@ -328,7 +342,7 @@ checkdependencies() {
   else
     echo "MacPorts 2.3.4 is not installed, running installation..."
     echo "Please run the install-dependencies.sh script before running this script..."
-    exit 5
+    exit 7
     log "MacPorts 2.3.4 is not installed, prompting user..."
   fi
 
@@ -346,7 +360,7 @@ checkdependencies() {
     echo "Homebrew 0.9.5 is not installed, prompting user..."
     echo "Please run the install-dependencies.sh script before running this script..."
     log "Homebrew 0.9.5 is not installed, prompting user..."
-    exit 6
+    exit 8
   fi
 
   # Check for Java Runtime Environment installation
@@ -362,7 +376,7 @@ checkdependencies() {
       echo "Java Runtime Environment is not installed, prompting user..."
       echo "Please run the install-dependencies.sh script before running this script..."
       log "Java Runtime Environment is not installed, prompting user..."
-      exit 7
+      exit 9
     fi
 
   # Check for Java Development Kit installation
@@ -378,7 +392,7 @@ checkdependencies() {
       echo "Java Runtime Development Kit is not installed, prompting user..."
       echo "Please run the install-dependencies.sh script before running this script..."
       log "Java Runtime Development Kit is not installed, prompting user..."
-      exit 8
+      exit 1
     fi
 
 }
@@ -390,7 +404,7 @@ main() {
 
   # Install dependencies using MacPorts
   port install boost
-  port install curl # required for pycurl compilation
+  port install curl # unsure if this is required since there's a system level version available
   port install jpeg
   port install libevent
   port install libpng
@@ -525,7 +539,7 @@ main() {
   popd
 
   # Update connection.py in ~/work/Webology/Website/Reflektion/lib/python2.7/site-packages/boto/s3/
-  perl -pi -w -e 's/calling_format=DefaultCallingFormat/calling_format=OrdinaryCallingFormat()/g;' ~/work/Webology/Website/Reflektion/lib/python2.7/site-packages/boto/s3/connection.py
+  perl -pi -w -e 's/calling_format=DefaultCallingFormat/calling_format=OrdinaryCallingFormat()/g;' "$HOMEDIR"/work/Webology/Website/Reflektion/lib/python2.7/site-packages/boto/s3/connection.py
   echo "Updating connection.py in ~/work/Webology/Website/Reflektion/lib/python2.7/site-packages/boto/s3/..."
   log "Updating connection.py in ~/work/Webology/Website/Reflektion/lib/python2.7/site-packages/boto/s3/..."
 
