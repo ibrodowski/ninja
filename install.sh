@@ -118,7 +118,7 @@ installdependencies() {
   echo "Checking mandatory dependencies..."
   log "Checking mandatory dependencies..."
 
-  # Check for /Library/RFK, if it does not exist, exit and prompt user
+  # Check for /Library/RFK, if it does not exist, prompt user and exit
   If [ -e $RFK ]; then
 
     echo "Found required RFK Software directory under /Library..."
