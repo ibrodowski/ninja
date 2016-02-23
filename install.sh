@@ -3,11 +3,21 @@
 #
 # Original Author : Unknown
 # Current Author  : Ian Brodowski
-# Last Update     : Tuesday, February 16, 2016
+# Last Update     : Monday, February 22, 2016
 #
 # Change History  :
+#   * 20160222    : Moved all setup.py changes to installdependencies()
+#                 : Uncommented JDK and JRE installation lines under installdependencies()
+#                 : 
+#
+#   * 20160217    : N.Bajaj reported that some packages were not being installed; verified that these missing packages are being installed
+#                 : Modify setup.py to comment-out a packaged depencency PIL and pywapi; this is installed using Imaging-1.1.7.tar.gz from
+#                 :   effbot.org and pywapi-0.3.8.tar.gz fron launchpad.net
+#                 :
+#
 #   * 20160216    : Modify setup.py to include explicit version specifiers for pyramid_beaker==0.8, pyramid_debugtoolbar==1.0.6 and pyramid_tm==0.7
 #                 : Added check to determine the existence of /Library/RFK, if it does not exist, exit and prompt user
+#                 :
 #
 #   * 20160212    : Moved variables for all functions under global variables section at the beginning of the script
 #                 :
@@ -25,6 +35,7 @@
 #                 :   pserve is now functional
 #                 : Modified setup.py to include version specific identifiers for pyramid, pyramid_tm, pyramid_beaker and pyramid_debugtoolbar
 #                 :   Commented out PIL, because it is installed via requirements.txt
+#                 :
 #
 #   * 20160208    : Commented out all Xcode and Xcode Command Line Tools checks
 #                 :   The reason for commenting all Xcode items is due to a clang error when trying to accept the terms and the subsequent installation of tools by the Xcode.app
@@ -55,7 +66,6 @@
 #   * 20160126    : All dependencies must be installed via install_dependencies.sh, before this script is executed
 #                 : Ran into an issue with pytz, had to add pip install --upgrade pytz to fix the issue
 #                 : Ran into an issue with creating /data/db under root, removed preappended sudo command
-#                 : 
 #                 :
 #
 #   * 20160125    : Modified the way virtualenv --system-site-packages command is executed; using "sudo -H -u $SUDO_USER" rather than $RunAsUser (i.e., RunAsUser=$(whoami))
@@ -83,6 +93,7 @@
 # 
 #   * 20160120    : Added if statement to identify version of OS X, if it does not match 10.10.5, the script exits
 #                 : All required additions/changes are now under the subroutine main
+#                 :
 # 
 
 # Pre-requisites: 
@@ -97,9 +108,8 @@ OS_Version=$(sw_vers -productVersion)
 LoggedInUser="`python -c 'from SystemConfiguration import SCDynamicStoreCopyConsoleUser; import sys; username = (SCDynamicStoreCopyConsoleUser(None, None, None) or [None])[0]; username = [username,""][username in [u"loginwindow", None, u""]]; sys.stdout.write(username + "\n");'`"
 HOMEDIR=$(dscl . -read /Users/"$LoggedInUser" NFSHomeDirectory | awk -F':' 'END{gsub(/^[ \t]+/,"",$NF); printf "%s", $NF }')
 WEBOLOGY="$HOMEDIR"/work/Webology
-BIN=$WEBOLOGY/Website/Reflektion/bin
-CLIPIT=$WEBOLOGY/Website/Reflektion/ClipIt
-WEB="$HOMEDIR"/work/Webology
+BIN=$WEBOLOGYOLOGY/Website/Reflektion/bin
+CLIPIT=$WEBOLOGYOLOGY/Website/Reflektion/ClipIt
 RFK="/Library/RFK"
 
 log() {
@@ -119,7 +129,7 @@ installdependencies() {
   log "Checking mandatory dependencies..."
 
   # Check for /Library/RFK, if it does not exist, prompt user and exit
-  If [ -e $RFK ]; then
+  if [ -e $RFK ]; then
 
     echo "Found required RFK Software directory under /Library..."
     log "Found required RFK Software directory under /Library..."
@@ -238,7 +248,7 @@ installdependencies() {
   log "Installing virtualenv 1.1.0 and setting system-site-packages..."
 
   # Install py-pip and python27 within ~/work/Webology/Website/Reflektion/bin
-  pushd $WEB/Website/Reflektion/bin/
+  pushd $WEBOLOGY/Website/Reflektion/bin/
   echo "Changing working directory to ~/work/Webology/Website/Reflektion/bin..."
   log "Changing working directory to ~/work/Webology/Website/Reflektion/bin..."
   port install py-pip
@@ -248,15 +258,15 @@ installdependencies() {
   popd
 
   # Install Java Runtime Environment
-  log "Checking Java Runtime Environment installation…"
+  log "Checking Java Runtime Environment installation..."
   jrebinary="/usr/bin/java"
     if [ -f $jrebinary ]; then
-      #jreinstalled=$(java -version 2>&1 | awk -F '"' '/version/ {print $2}')
-      #if [ $jreinstalled = "1.8.0_73" ]; then
-      #  echo "Java Runtime Environment 1.8.0_73 is installed."
-      #  log "Java Runtime Environment 1.8.0_73 is installed."
-      #fi
-    #else
+      jreinstalled=$(java -version 2>&1 | awk -F '"' '/version/ {print $2}')
+      if [ $jreinstalled = "1.8.0_73" ]; then
+        echo "Java Runtime Environment 1.8.0_73 is installed."
+        log "Java Runtime Environment 1.8.0_73 is installed."
+      fi
+    else
       pushd $RFK/
       echo "Java Runtime Environment is not installed, running installation..."
       log "Java Runtime Environment is not installed, running installation..."
@@ -265,15 +275,15 @@ installdependencies() {
     fi
 
   # Install Java Development Kit
-  log "Checking Java Development Kit installation…"
+  log "Checking Java Development Kit installation..."
   jdkbinary="/usr/bin/javac"
     if [ -f $jdkbinary ]; then
-      #jreinstalled=$(javac -version 2>&1 | awk '{print $2}')
-      #if [ $jreinstalled = "1.8.0_73" ]; then
-      #  echo "Java Development Kit 1.8.0_73 is installed."
-      #  log "Java Development Kit 1.8.0_73 is installed."
-      #fi
-    #else
+      jreinstalled=$(javac -version 2>&1 | awk '{print $2}')
+      if [ $jreinstalled = "1.8.0_73" ]; then
+        echo "Java Development Kit 1.8.0_73 is installed."
+        log "Java Development Kit 1.8.0_73 is installed."
+      fi
+    else
       pushd $RFK/
       echo "Java Runtime Development Kit is not installed, running installation..."
       log "Java Runtime Development Kit is not installed, running installation..."
@@ -281,12 +291,26 @@ installdependencies() {
       popd
     fi
 
-  # Update setup.py to include explicit versions specifiers for pyramid_beaker, pyramid_debugtoolbar and pyramid_tm
+  #
+  # Update setup.py (ClipIt)
+  #
+
+  # Modify setup.py to include explicit version specifiers for pyramid_beaker, pyramid_debugtoolbar and pyramid_tm
   echo "Updating setup.py to include explicit version specifiers for pyramid_beaker, pyramid_debugtoolbar and pyramid_tm"
   log "Updating setup.py to include explicit version specifiers for pyramid_beaker, pyramid_debugtoolbar and pyramid_tm"
-  perl -pi -w -e 's/pyramid_beaker/pyramid_beaker==0.8/g;' "$HOMEDIR"/work/Webology/Website/Reflektion/ClipIt/setup.py
-  perl -pi -w -e 's/pyramid_debugtoolbar/pyramid_debugtoolbar==1.0.6/g;' "$HOMEDIR"/work/Webology/Website/Reflektion/ClipIt/setup.py
-  perl -pi -w -e 's/pyramid_tm/pyramid_tm==0.7/g;' "$HOMEDIR"/work/Webology/Website/Reflektion/ClipIt/setup.py
+  perl -pi -w -e "s/'pyramid_beaker',/'pyramid_beaker==0.8',/g;" "$HOMEDIR"/work/Webology/Website/Reflektion/ClipIt/setup.py
+  perl -pi -w -e "s/'pyramid_debugtoolbar',/'pyramid_debugtoolbar==1.0.6',/g;" "$HOMEDIR"/work/Webology/Website/Reflektion/ClipIt/setup.py
+  perl -pi -w -e "s/'pyramid_tm',/'pyramid_tm==0.7',/g;" "$HOMEDIR"/work/Webology/Website/Reflektion/ClipIt/setup.py
+
+  # Modify setup.py to remove dependency on pywapi, which was replaced with pywapi-0.38.0.tar.gz
+  echo "Modify setup.py to remove dependency on pywapi, which was replaced with pywapi-0.38.0.tar.gz..."
+  log "Modify setup.py to remove dependency on pywapi, which was replaced with pywapi-0.38.0.tar.gz..."
+  perl -pi -w -e "s/'pywapi',/#'pywapi',/g;" "$HOMEDIR"/work/Webology/Website/Reflektion/ClipIt/setup.py
+
+  # Modify setup.py to remove dependency on PIL, which was replaced with Imaging-1.1.7.tar.gz
+  echo "Modify setup.py to remove dependency on PIL, which was replaced with Imaging-1.1.7.tar.gz..."
+  log "Modify setup.py to remove dependency on PIL, which was replaced with Imaging-1.1.7.tar.gz..."
+  perl -pi -w -e "s/'PIL',/#'PIL',/g;" "$HOMEDIR"/work/Webology/Website/Reflektion/ClipIt/setup.py
 
 }
 
@@ -364,7 +388,7 @@ checkdependencies() {
   fi
 
   # Check for Java Runtime Environment installation
-  log "Checking Java Runtime Environment installation…"
+  log "Checking Java Runtime Environment installation..."
   jrebinary="/usr/bin/java"
     if [ -f $jrebinary ]; then
       jreinstalled=$(java -version 2>&1 | awk -F '"' '/version/ {print $2}')
@@ -380,7 +404,7 @@ checkdependencies() {
     fi
 
   # Check for Java Development Kit installation
-  log "Checking Java Development Kit installation…"
+  log "Checking Java Development Kit installation..."
   jdkbinary="/usr/bin/javac"
     if [ -f $jdkbinary ]; then
       jreinstalled=$(javac -version 2>&1 | awk '{print $2}')
@@ -419,8 +443,7 @@ main() {
   echo "Activate virtual environment"
   log "Activate virtual environment"
 
-# Install dependencies using pip
-  #port install python27
+  # Install dependencies using pip
   sudo -H -u $SUDO_USER $BIN/easy_install pip
   sudo -H -u $SUDO_USER $BIN/pip install --upgrade pip
   sudo -H -u $SUDO_USER $BIN/pip install --upgrade setuptools
@@ -475,8 +498,8 @@ main() {
 
   # Invoke setup.py after installing all required dependencies
   sudo -H -u $SUDO_USER $BIN/pip install -e $CLIPIT # or $BIN/pip install -e .
-  echo "Invoke setup.py after installing all required dependencies"
-  log "Invoke setup.py after installing all required dependencies"
+  echo "Invoke setup.py to install ClipIt dependencies, after installing all base dependencies..."
+  log "Invoke setup.py to install ClipIt dependencies, after installing all base dependencies..."
 
   # Decompress mongo dump into /data/db
   mkdir -p /data/db
