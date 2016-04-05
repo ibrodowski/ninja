@@ -6,7 +6,7 @@
 # Script Purpose  : Installs all pip dependencies, this file needs to be in~/work/Webology/Website/Reflektion/ClipIt
 #
 # Change History  :
-#   * 20160404    : No notable changes 
+#   * 20160404    : Added urllib3<2.0,>=1.8, which is a dependency for elasticsearch==1.7.0
 #                 :
 #                 :
 #
@@ -62,6 +62,7 @@ user-agents==1.0.1
 ua-parser==0.4.1
 pyes==0.20.0
 planout==0.5
+urllib3<2.0,>=1.8
 
 #
 # Specific files
