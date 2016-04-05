@@ -8,22 +8,22 @@
 # Change History  :
 #   * 20160404    : No notable changes 
 #                 :
-#				          :
+#                 :
 #
 #   * 20160216    : Cleanup of file, removed all commented-out lines for gevent==0.13.8, pycurl==7.19, Imaging-1.1.7.tar.gz and 
 #                 :   pywapi-0.3.8.tar.gz
-#				          :
+#                 :
 #
 #   * 20160211    : Commented out gevent==0.13.8, Imaging-1.1.7.tar.gz and pywapi-0.3.8.tar.gz
-#				          :	Re-added pywapi from launchpad.net, because it is no longer available via pip repos
-#				          :
+#                 :	Re-added pywapi from launchpad.net, because it is no longer available via pip repos
+#                 :
 #
 #   * 20160209    : Commented out "pycurl==7.19"; fix was introduced directly into "install.sh"
-#				          :	Re-added pywapi from launchpad.net, because it is no longer available via pip repos
-#				          :
+#                 :	Re-added pywapi from launchpad.net, because it is no longer available via pip repos
+#                 :
 #
 #   * 20160208    : Added pywapi from launchpad.net, because it is no longer available via pip repos
-#				          :
+#                 :
 #
 #   * 20160205    : Removed duplicate entry for scipy
 #                 : This file removes the dependency on package_install.sh
