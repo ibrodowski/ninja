@@ -9,7 +9,7 @@
 #   * 20160429    : Added method for determining if pidfiles directory exists within $CLIPIT/tools/services/var
 #                 :   If it does not exist, create the directory; this directory is required for all services started with development.ini
 #                 : Added method for the installation of .bashprofile, .bashrc, .sharc and .ssh into $HOMEDIR
-#                 :
+#                 : 
 #
 #   * 20160427    : Added method for installing Reflektion Software.pkg
 #                 :
