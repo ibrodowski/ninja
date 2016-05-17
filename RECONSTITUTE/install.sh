@@ -378,7 +378,7 @@ generate() {
 updatepaths() {
 
   LINE1="export PATH=\${PATH}:/usr/local/mysql/bin:/opt/local/bin:/opt/local/sbin"
-  LINE2="export DYLD_LIBRARY_PATH=\${DYLD_LIBRARY_PATH}:/usr/local/mysql/lib/"
+  LINE2="export DYLD_LIBRARY_PATH=/usr/local/mysql/lib"
 
   if [ ! -e "$HOMEDIR"/.bashrc ]; then
     sudo -u "$SUDO_USER" touch "$HOMEDIR"/.bashrc
