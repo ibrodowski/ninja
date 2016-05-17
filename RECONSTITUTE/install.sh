@@ -10,11 +10,19 @@
 #                 : • PATH ($PATH) variable must already include /usr/local/mysql/bin:/usr/local/bin:/opt/local/bin:/opt/local/sbin
 #                 : • Xcode and Xcode command line tools must already be installed
 #                 : • Homebrew 0.9.9 and MacPorts 2.3.4 must already be installed
+#                 : • mySQL 5.5.4.6 must already be installed
 #                 : • Oracle Java Runtime Environment 1.8.0_91 and Java Development Kit 1.8.0_91 must already be installed
+#                 : -
+#                 : • A folder known as data must be located in your home directory (e.g., ~/data)
+#                 :     this folder contains compressed backup (OLD) archives for mongodb, mysql and redis
+#                 :     if you do not have this folder, comment out lines 814-822, 856-860 and 862-867 
 #
 # Troubleshooting : • If imager fails to launch, manually run the following command:
+#                 :     source ~/work/Webology/Website/Reflektion/bin/activate
 #                 :     sudo install_name_tool -change libmysqlclient.18.dylib /usr/local/mysql/lib/libmysqlclient.18.dylib ~/work/Webology/Website/Reflektion/lib/python2.7/site-packages/_mysql.so
-#
+#                 :     cd ~/work/Webology/Website/Reflektion/ClipIt
+#                 :     tools/services/workers/imager.py ~/work/Webology/Website/Reflektion/ClipIt/development.ini start || true  
+#                 
 # Change History  :
 #   * 20160517    : This script was modified for reconsitution of a missing or otherwise deleted local development environment
 #                 : Commented out installdependencies and created new functions to call them independently from installdependencies
