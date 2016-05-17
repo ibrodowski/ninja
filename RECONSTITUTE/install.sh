@@ -13,7 +13,7 @@
 #                 : • Oracle Java Runtime Environment 1.8.0_91 and Java Development Kit 1.8.0_91 must already be installed
 #
 # Troubleshooting : • If imager fails to launch, manually run the following command:
-#                 :     install_name_tool -change libmysqlclient.18.dylib /usr/local/mysql/lib/libmysqlclient.18.dylib ~/work/Webology/Website/Reflektion/lib/python2.7/site-packages/_mysql.so
+#                 :     sudo install_name_tool -change libmysqlclient.18.dylib /usr/local/mysql/lib/libmysqlclient.18.dylib ~/work/Webology/Website/Reflektion/lib/python2.7/site-packages/_mysql.so
 #
 # Change History  :
 #   * 20160517    : This script was modified for reconsitution of a missing or otherwise deleted local development environment
