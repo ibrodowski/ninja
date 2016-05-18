@@ -247,8 +247,8 @@ setupvenv() {
   python setup.py install
   cd -
   sudo -H -u "$SUDO_USER" /usr/local/bin/virtualenv "$HOMEDIR"/work/Webology/Website/Reflektion
-  echo "Installing virtualenv 1.1.0 and setting virtualenv path..."
-  log "Installing virtualenv 1.1.0 and setting virtualenv path..."
+  echo "Installing virtualenv 1.10.0 and setting virtualenv path..."
+  log "Installing virtualenv 1.10.0 and setting virtualenv path..."
 
 }
 
