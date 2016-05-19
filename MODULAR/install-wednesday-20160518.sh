@@ -544,7 +544,8 @@ installbrew() {
   brewbinary="/usr/local/bin/brew"
   if [ -f "$brewbinary" ]; then
     echo "Homebrew is installed, checking version..."
-      HomebrewInstalled=$(brew --version | awk '{print $2}')
+      HomebrewInstalled=(`brew --version | awk '{print $2}' | sed 's/(git//g' | tr -d "\n"`)
+      #HomebrewInstalled=$(brew --version | awk '{print $2}')
       if [ "$HomebrewInstalled" = "0.9.9" ]; then
           echo "Homebrew 0.9.9 is installed."
           log "Homebrew 0.9.9 is installed"
@@ -625,9 +626,7 @@ checkxcode() {
   else
       echo "Xcode is not installed, prompting user..."
       echo "Please manually install Xcode.app and the Xcode Command Line Tools before running this script..."
-      exit 5
-      log "Xcode is not installed, prompting user..."
-      log "Please manually install Xcode.app and the Xcode Command Line Tools before running this script..."
+      #exit 5
   fi
 
 }
@@ -648,7 +647,7 @@ checkmysql() {
       echo "mySQL 5.5.46 is not installed, prompting user..."
       echo "Please install mySQL 5.4.6 before running this script... Exiting..."
       log "Please install mySQL 5.4.6 before running this script... Exiting..."
-      exit 6
+      #exit 6
   fi
 
 }
@@ -669,7 +668,7 @@ checkport() {
     echo "MacPorts 2.3.4 is not installed, running installation..."
     echo "Please install MacPorts 2.3.4 before running this script... Exiting..."
     log "Please install MacPorts 2.3.4 before running this script... Exiting..."
-    exit 7
+    #exit 7
   fi
 
 }
@@ -681,7 +680,8 @@ checkbrew() {
   brewbinary="/usr/local/bin/brew"
   if [ -f "$brewbinary" ]; then
     echo "Homebrew is installed, checking version..."
-      HomebrewInstalled=$(brew --version | awk '{print $2}')
+      HomebrewInstalled=(`brew --version | awk '{print $2}' | sed 's/(git//g' | tr -d "\n"`)
+      #HomebrewInstalled=$(brew --version | awk '{print $2}')
       if [ "$HomebrewInstalled" = "0.9.9" ]; then
           echo "Homebrew 0.9.9 is installed."
           log "Homebrew 0.9.9 is installed."
@@ -690,7 +690,7 @@ checkbrew() {
     echo "Homebrew 0.9.9 is not installed, prompting user..."
     echo "Please install Homebrew 0.9.9 before running this script... Exiting..."
     log "Please install Homebrew 0.9.9 before running this script... Exiting..."
-    exit 8
+    #exit 8
   fi
 
 }
@@ -710,7 +710,7 @@ checkjre() {
       echo "Java Runtime Environment is not installed, prompting user..."
       echo "Please install JRE 1.8.0_91 before running this script... Exiting..."
       log "Please install JRE 1.8.0_91 before running this script... Exiting..."
-      exit 9
+      #exit 9
     fi
 
 }
@@ -729,7 +729,7 @@ checkjdk() {
       echo "Java Runtime Development Kit is not installed, prompting user..."
       echo "Please install JDK 1.8.0_91 before running this script... Exiting..."
       log "Please install JDK 1.8.0_91 before running this script... Exiting..."
-      exit 1
+      #exit 1
     fi
 
 }
@@ -982,7 +982,9 @@ installdependencies() {
 checkdependencies() {
 
   echo "Checking mandatory dependencies..."
+  echo "Script executed with $argue argument!"
   log "Checking dependencies..."
+  log "Script executed with $argue argument!"
 
   #
   # Install Xcode and Xcode command line tools
@@ -1007,12 +1009,12 @@ checkdependencies() {
   #
   # Install Oracle Java Runtime Environment
   #
-  installjre
+  checkjre
 
   #
   # Install Oracle Java Development Kit
   #
-  installjdk
+  checkjdk
 
 }
 
@@ -1127,28 +1129,40 @@ fi
 
 if [[ ${OS_Version} == "10.10.5" ]]; then
    echo "Detected valid OS X version, ${OS_Version}, continuing..."
-   log "Supported operating system version detected..."
+   log "Detected valid OS X version, ${OS_Version}, continuing..."
    #installdependencies
    #checkdependencies
    #main
 elif [[ ${OS_Version} == "10.11.4" ]]; then
    echo "Detected valid OS X version, ${OS_Version}, continuing..."
-   log "Supported operating system version detected..."
+   log "Detected valid OS X version, ${OS_Version}, continuing..."
    #installdependencies
    #checkdependencies
    #main
 elif [[ ${OS_Version} == "10.11.5" ]]; then
    echo "Detected valid OS X version, ${OS_Version}, continuing..."
-   log "Supported operating system version detected..."
+   log "Detected valid OS X version, ${OS_Version}, continuing..."
    #installdependencies
    #checkdependencies
    #main
 
-    while getopts ":c" opt; do
+    while getopts "ci:s" opt; do
       case $opt in
         c)
-            echo "Checking dependencies..." >&2
+            #echo "Checking dependencies..." >&2
+            argue="-c"
             checkdependencies
+            ;;
+        i)
+            #echo "Installing software dependencies..." >&2
+            argue="-i"
+            installdependencies
+            ;;
+
+        s)
+            #echo "Installing package dependencies..." >&2
+            argue="-s"
+            main
             ;;
         \?)
             echo "Invalid option: -$OPTARG" >&2
