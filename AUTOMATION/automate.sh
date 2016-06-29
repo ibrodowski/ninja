@@ -8,6 +8,7 @@
 #
 # Change History  :
 #   * 20160628    : Added delta updates for MS Excel, PowerPoint and Word
+#   * 20160628    : Added Charles Proxy installation and bypass for mounting DMG with EULA/SLA dialog
 #
 #   * 20160619    : Removed Bitdefender for Standard image
 #
@@ -43,10 +44,11 @@ main () {
       installer -pkg "$CURRENTDIR"/antivirus_for_mac.pkg -target /
 
       echo "Installing Charles Proxy..."
-      #hdiutil mount "$CURRENTDIR"/Charles.dmg
-      #cp -R "/Volumes/Charles/Charles.app" /Applications
-      #hdiutil unmount "/Volumes/Charles"
-      cp "$CURRENTDIR"/com.xk72.charles.config "$HOMEDIR"/Library/Preferences
+      yes | /usr/bin/hdiutil attach "/Library/RFK/JIDOKA/charles-proxy-3.11.5.dmg" > /dev/null
+      cp -R /Volumes/Charles\ Proxy\ v3.11.5/Charles.app "$3/Applications/"
+      /usr/bin/hdiutil detach /Volumes/Charles\ Proxy\ v3.11.5
+      cp "/Library/RFK/JIDOKA/com.xk72.charles.config" "$HOMEDIR"/Library/Preferences
+      chown $LoggedInUser:staff "$HOMEDIR"/Library/Preferences/com.xk72.charles.config
 
     else
 
@@ -80,10 +82,11 @@ main () {
       #installer -pkg "$CURRENTDIR"/antivirus_for_mac.pkg -target /
       
       #echo "Installing Charles Proxy..."
-      #hdiutil mount "$CURRENTDIR"/Charles.dmg
-      #cp -R "/Volumes/Charles/Charles.app" /Applications
-      #hdiutil unmount "/Volumes/Charles"
-      cp "$CURRENTDIR"/com.xk72.charles.config "$HOMEDIR"/Library/Preferences
+      yes | /usr/bin/hdiutil attach "/Library/RFK/JIDOKA/charles-proxy-3.11.5.dmg" > /dev/null
+      cp -R /Volumes/Charles\ Proxy\ v3.11.5/Charles.app "$3/Applications/"
+      /usr/bin/hdiutil detach /Volumes/Charles\ Proxy\ v3.11.5
+      cp "/Library/RFK/JIDOKA/com.xk72.charles.config" "$HOMEDIR"/Library/Preferences
+      chown $LoggedInUser:staff "$HOMEDIR"/Library/Preferences/com.xk72.charles.config
 
     fi
 
