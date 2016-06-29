@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Author	 : Ian Brodowski
+# Author	  : Ian Brodowski
 # Last Update     : Sunday, June 19, 2016
 #
 # Requirements    : Requires software packages to be located within the same directory as the script.
@@ -64,6 +64,15 @@ main () {
 
       echo "Installing Microsoft Delta Update for Word 15.23.0 to 15.23.1..."
       installer -pkg "$CURRENTDIR"/Microsoft_Word_15.23.0_160611_to_15.23.1_160617_Delta.pkg -target /
+      
+      echo "Installing Microsoft Delta Update for Excel 15.23.1 to 15.23.2..."
+      installer -pkg "$CURRENTDIR"/Microsoft_Excel_15.23.1_160617_to_15.23.2_160624_Delta.pkg -target /
+
+      echo "Installing Microsoft Delta Update for Word 15.23.1 to 15.23.2..."
+      installer -pkg "$CURRENTDIR"/Microsoft_Word_15.23.1_160617_to_15.23.2_160624_Delta.pkg -target /
+      
+      echo "Installing Microsoft Delta Update for PowerPoint 15.23.0 to 15.23.2..."
+      installer -pkg "$CURRENTDIR"/Microsoft_PowerPoint_15.23.0_160611_to_15.23.2_160624_Delta.pkg -target /
 
       #echo "Installing Bitdefender GravityZone Business Security..."
       #installer -pkg "$CURRENTDIR"/antivirus_for_mac.pkg -target /
