@@ -1,7 +1,9 @@
 #!/bin/bash
 #
-# Author	  : Ian Brodowski
+# Author	        : Ian Brodowski
 # Last Update     : Sunday, June 19, 2016
+#
+# Requirements    : Requires software packages to be located within the same directory as the script.
 #
 # Change History  :
 #   * 20160619    : Removed Bitdefender for Standard image
