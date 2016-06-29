@@ -44,9 +44,9 @@ main () {
       installer -pkg "$CURRENTDIR"/antivirus_for_mac.pkg -target /
 
       echo "Installing Charles Proxy..."
-      yes | /usr/bin/hdiutil attach "/Library/RFK/JIDOKA/charles-proxy-3.11.5.dmg" > /dev/null
-      cp -R /Volumes/Charles\ Proxy\ v3.11.5/Charles.app "$3/Applications/"
-      /usr/bin/hdiutil detach /Volumes/Charles\ Proxy\ v3.11.5
+      yes | /usr/bin/hdiutil attach "$CURRENTDIR"/charles-proxy-3.11.5.dmg > /dev/null
+      cp -R /Volumes/Charles\ Proxy\ v3.11.5/Charles.app "/Applications/"
+      hdiutil detach /Volumes/Charles\ Proxy\ v3.11.5
       cp "/Library/RFK/JIDOKA/com.xk72.charles.config" "$HOMEDIR"/Library/Preferences
       chown $LoggedInUser:staff "$HOMEDIR"/Library/Preferences/com.xk72.charles.config
 
@@ -82,9 +82,9 @@ main () {
       #installer -pkg "$CURRENTDIR"/antivirus_for_mac.pkg -target /
       
       #echo "Installing Charles Proxy..."
-      yes | /usr/bin/hdiutil attach "/Library/RFK/JIDOKA/charles-proxy-3.11.5.dmg" > /dev/null
-      cp -R /Volumes/Charles\ Proxy\ v3.11.5/Charles.app "$3/Applications/"
-      /usr/bin/hdiutil detach /Volumes/Charles\ Proxy\ v3.11.5
+      yes | /usr/bin/hdiutil attach "$CURRENTDIR"/charles-proxy-3.11.5.dmg > /dev/null
+      cp -R /Volumes/Charles\ Proxy\ v3.11.5/Charles.app "/Applications/"
+      hdiutil detach /Volumes/Charles\ Proxy\ v3.11.5
       cp "/Library/RFK/JIDOKA/com.xk72.charles.config" "$HOMEDIR"/Library/Preferences
       chown $LoggedInUser:staff "$HOMEDIR"/Library/Preferences/com.xk72.charles.config
 
