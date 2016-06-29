@@ -29,7 +29,7 @@ HOMEDIR=$(dscl . -read /Users/"$LoggedInUser" NFSHomeDirectory | awk -F':' 'END{
       /usr/sbin/installer -pkg "/Library/RFK/JIDOKA/antivirus_for_mac.pkg" -target $3
 
        # "Installing Charles Proxy..."
-      agree | /usr/bin/hdiutil attach "/Library/RFK/JIDOKA/charles-proxy-3.11.5.dmg" > /dev/null
+      yes | /usr/bin/hdiutil attach "/Library/RFK/JIDOKA/charles-proxy-3.11.5.dmg" > /dev/null
       cp -R /Volumes/Charles\ Proxy\ v3.11.5/Charles.app "$3/Applications/"
       /usr/bin/hdiutil detach /Volumes/Charles\ Proxy\ v3.11.5
       cp "/Library/RFK/JIDOKA/com.xk72.charles.config" "$HOMEDIR"/Library/Preferences
@@ -64,7 +64,7 @@ HOMEDIR=$(dscl . -read /Users/"$LoggedInUser" NFSHomeDirectory | awk -F':' 'END{
       /usr/sbin/installer -pkg "/Library/RFK/JIDOKA/Microsoft_PowerPoint_15.23.0_160611_to_15.23.2_160624_Delta.pkg" -target $3
 
        # "Installing Charles Proxy..."
-      agree | /usr/bin/hdiutil attach "/Library/RFK/JIDOKA/charles-proxy-3.11.5.dmg" > /dev/null
+      yes | /usr/bin/hdiutil attach "/Library/RFK/JIDOKA/charles-proxy-3.11.5.dmg" > /dev/null
       cp -R /Volumes/Charles\ Proxy\ v3.11.5/Charles.app "$3/Applications/"
       /usr/bin/hdiutil detach /Volumes/Charles\ Proxy\ v3.11.5
       cp "/Library/RFK/JIDOKA/com.xk72.charles.config" "$HOMEDIR"/Library/Preferences
