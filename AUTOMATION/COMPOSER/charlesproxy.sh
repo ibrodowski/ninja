@@ -20,7 +20,5 @@ HOMEDIR=$(dscl . -read /Users/"$LoggedInUser" NFSHomeDirectory | awk -F':' 'END{
   cp "/Library/RFK/JIDOKA/com.xk72.charles.config" "$HOMEDIR"/Library/Preferences
   chown $LoggedInUser:staff "$HOMEDIR"/Library/Preferences/com.xk72.charles.config
 
-  exit 0
-
 exit 0		## Success
 exit 1		## Failure
