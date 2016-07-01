@@ -14,7 +14,7 @@ LoggedInUser="`python -c 'from SystemConfiguration import SCDynamicStoreCopyCons
 HOMEDIR=$(dscl . -read /Users/"$LoggedInUser" NFSHomeDirectory | awk -F':' 'END{gsub(/^[ \t]+/,"",$NF); printf "%s", $NF }')
 
   # "Installing Charles Proxy..."
-  yes | /usr/bin/hdiutil attach -nobrowse "/Library/RFK/JIDOKA/charles-proxy-3.11.5.dmg" > /dev/null
+  yes | /usr/bin/hdiutil attach -nobrowse "/Library/RFK/Software/CharlesProxy/charles-proxy-3.11.5.dmg" > /dev/null
   cp -R /Volumes/Charles\ Proxy\ v3.11.5/Charles.app "$3/Applications/"
   /usr/bin/hdiutil detach /Volumes/Charles\ Proxy\ v3.11.5
   cp "/Library/RFK/Software/CharlesProxy/com.xk72.charles.config" "$HOMEDIR"/Library/Preferences
