@@ -31,5 +31,12 @@ HOMEDIR=$(dscl . -read /Users/"$LoggedInUser" NFSHomeDirectory | awk -F':' 'END{
  # "Installing Microsoft Delta Update for PowerPoint 15.23.0 to 15.23.2..."
 /usr/sbin/installer -pkg "/Library/RFK/Software/Microsoft/Microsoft_PowerPoint_15.23.0_160611_to_15.23.2_160624_Delta.pkg" -target $3
 
-exit 0		## Success
-exit 1		## Failure
+/usr/bin/srm -s "/Library/RFK/Software/Microsoft/Microsoft_Office_2016_15.23.0_160611_Installer.pkg"
+
+msword="/Applications/Microsoft\ Word.app"
+
+if [ -e "$msword" ]; then
+  exit 0		## Success
+else
+  exit 1		## Failure
+fi
