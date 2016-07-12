@@ -3,9 +3,12 @@
 #
 # Original Author : Unknown
 # Current Author  : Ian Brodowski
-# Last Update     : Friday, June 17, 2016
+# Last Update     : Tuesday, July 12, 2016
 #
 # Change History  :
+#   * 20160712    : Debugging; nodejs, npm and phantomjs have been deprecated.
+#                 :   The replacements are: nodejs4, npm2, and phantomjs-prebuilt
+#
 #   * 20160617    : Debugging; Random updates to fix known issues.
 #
 #   * 20160608    : Debugging; Modify .bashrc that's decompressed into ~/
