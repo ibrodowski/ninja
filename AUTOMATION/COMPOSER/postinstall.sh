@@ -28,12 +28,14 @@ HOMEDIR=$(dscl . -read /Users/"$LoggedInUser" NFSHomeDirectory | awk -F':' 'END{
        # "Installing Bitdefender GravityZone Business Security..."
       /usr/sbin/installer -pkg "/Library/RFK/JIDOKA/antivirus_for_mac.pkg" -target $3
 
-       # "Installing Charles Proxy..."
-      yes | /usr/bin/hdiutil attach "/Library/RFK/JIDOKA/charles-proxy-3.11.5.dmg" > /dev/null
+      # "Installing Charles Proxy..."
+      yes | /usr/bin/hdiutil attach -nobrowse "/Library/RFK/Software/CharlesProxy/charles-proxy-3.11.5.dmg" > /dev/null
       cp -R /Volumes/Charles\ Proxy\ v3.11.5/Charles.app "$3/Applications/"
       /usr/bin/hdiutil detach /Volumes/Charles\ Proxy\ v3.11.5
-      cp "/Library/RFK/JIDOKA/com.xk72.charles.config" "$HOMEDIR"/Library/Preferences
+      cp "/Library/RFK/Software/CharlesProxy/com.xk72.charles.config" "$HOMEDIR"/Library/Preferences
       chown $LoggedInUser:staff "$HOMEDIR"/Library/Preferences/com.xk72.charles.config
+      chown $LoggedInUser:staff "$3/Applications/Charles.app"
+      security add-trusted-cert -d -r trustRoot -k "$HOMEDIR"/Library/Keychains/login.keychain "/Library/RFK/Software/CharlesProxy/charlesproxy.cer" srm "/Library/RFK/Software/CharlesProxy/charlesproxy.cer"
 
     else
 
@@ -63,13 +65,22 @@ HOMEDIR=$(dscl . -read /Users/"$LoggedInUser" NFSHomeDirectory | awk -F':' 'END{
        # "Installing Microsoft Delta Update for PowerPoint 15.23.0 to 15.23.2..."
       /usr/sbin/installer -pkg "/Library/RFK/JIDOKA/Microsoft_PowerPoint_15.23.0_160611_to_15.23.2_160624_Delta.pkg" -target $3
 
-       # "Installing Charles Proxy..."
-      yes | /usr/bin/hdiutil attach "/Library/RFK/JIDOKA/charles-proxy-3.11.5.dmg" > /dev/null
+      # "Installing Charles Proxy..."
+      yes | /usr/bin/hdiutil attach -nobrowse "/Library/RFK/Software/CharlesProxy/charles-proxy-3.11.5.dmg" > /dev/null
       cp -R /Volumes/Charles\ Proxy\ v3.11.5/Charles.app "$3/Applications/"
       /usr/bin/hdiutil detach /Volumes/Charles\ Proxy\ v3.11.5
-      cp "/Library/RFK/JIDOKA/com.xk72.charles.config" "$HOMEDIR"/Library/Preferences
+      cp "/Library/RFK/Software/CharlesProxy/com.xk72.charles.config" "$HOMEDIR"/Library/Preferences
       chown $LoggedInUser:staff "$HOMEDIR"/Library/Preferences/com.xk72.charles.config
-
+      chown $LoggedInUser:staff "$3/Applications/Charles.app"
+      security add-trusted-cert -d -r trustRoot -k "$HOMEDIR"/Library/Keychains/login.keychain "/Library/RFK/Software/CharlesProxy/charlesproxy.cer" srm "/Library/RFK/Software/CharlesProxy/charlesproxy.cer"
+      
+      cisco="$3/Applications/Cisco/Cisco\ AnyConnect\ Secure\ Mobility\ Client.app"
+      msexcel="$3/Applications/Microsoft\ Excel.app"
+      charlesproxy="$3/Applications/Charles.app"
+      
+      if [ -e "$cisco" ]; then
+      
+      
     fi
 
 exit 0		## Success
