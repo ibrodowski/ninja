@@ -19,6 +19,7 @@ HOMEDIR=$(dscl . -read /Users/"$LoggedInUser" NFSHomeDirectory | awk -F':' 'END{
   /usr/bin/hdiutil detach /Volumes/Charles\ Proxy\ v3.11.5
   cp "/Library/RFK/Software/CharlesProxy/com.xk72.charles.config" "$HOMEDIR"/Library/Preferences
   chown $LoggedInUser:staff "$HOMEDIR"/Library/Preferences/com.xk72.charles.config
+  chown $LoggedInUser:staff "$3/Applications/Charles.app"
   security add-trusted-cert -d -r trustRoot -k "$HOMEDIR"/Library/Keychains/login.keychain "/Library/RFK/Software/CharlesProxy/charlesproxy.cer" srm "/Library/RFK/Software/CharlesProxy/charlesproxy.cer"
 
   charlesproxyapp="$3/Applications/Charles.app"
