@@ -4,11 +4,16 @@ set -x
 #
 #
 # Author          : Ian Brodowski
-# Latest Update   : Wednesday, August 10, 2016
+# Latest Update   : Thursday, August 11, 2016
 # 
 # Purpose         : Install third-party software that is not otherwise integrated within the RFK developer or standard image(s)
 #
 # Change History  :
+#   * 20160811    : Added ability to set computer name based IATA airport code and user's name
+#                 : Added ability to enable Remote Management Features using kickstart from ARDAgent.app
+#                 : Added additional UI/UX test code for CocoaDialog for password handling and obfuscation during entry
+#                 : Added Terminal dock icon for Developer image
+#
 #   * 20160810    : Added initial UI/UX test code for CocoaDialog input and output capture for script use
 #                 : Added Terminal dock icon for Developer image
 #                 : Commented out 'OS_Version' because it is not called within this script
@@ -41,6 +46,8 @@ LoggedInUser="`python -c 'from SystemConfiguration import SCDynamicStoreCopyCons
       LoggedInUser=$(who -q | head -1 | cut -d ' ' -f2)
   fi
 HOMEDIR=$(dscl . -read /Users/"$LoggedInUser" NFSHomeDirectory | awk -F':' 'END{gsub(/^[ \t]+/,"",$NF); printf "%s", $NF }')
+UserInLogged=`echo $LoggedInUser | tr [a-z] [A-Z]`
+ardkick=/System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart
 cocoadialog=/Library/RFK/Software/bin/utils/CocoaDialog.app/Contents/MacOS/CocoaDialog
 dockutil=/Library/RFK/Software/bin/utils/dockutil
 scripts=/Library/RFK/Software/bin/scpt
@@ -111,10 +118,33 @@ scripts=/Library/RFK/Software/bin/scpt
 
       # Interactive user input for script processing (in testing...)
       #ben=`$cocoadialog standard-inputbox --title "Information Required" --informative-text "Please enter your email address:"`
+      #ben=`$cocoadialog inputbox --title "GitHub Account Information Required" --informative-text "Please enter your email address:" --button1 "OK" --float`
       #button=`echo "${ben}" | awk 'NR>0{print $0}' | sed -e 's,.*(\([^<]*\)).*,\1,g'`;
       #StandardInputbox_Output=`echo "${ben}" | awk 'NR>1{print $1}' | sed -e 's,.*(\([^<]*\)).*,\1,g'`;
+      #jerry=`"$CocoaDialog" secure-standard-inputbox --title "GitHub Account Information Required" --informative-text "Please enter your password:" --string-output --float --icon "Info" --debug`
+      #button=`echo "${jerry}" | awk 'NR>0{print $0}' | sed -e 's,.*(\([^<]*\)).*,\1,g'`;
+      #SecureStandardInputBox_Output=`echo "${jerry}" | awk 'NR>1{print $1}' | sed -e 's,.*(\([^<]*\)).*,\1,g'`;
 
       #$cocoadialog bubble --debug --x-placement "left" --y-placement "center" --title "You Entered:" --text "$StandardInputbox_Output" --icon "info" --timeout "15"
+      #$cocoadialog bubble --debug --x-placement "left" --y-placement "center" --title "You Entered:" --text "$SecureStandardInputBox_Output" --icon "info" --timeout "15"
+
+      # Enabled Remote Management via ARDAgent.app/Contents/Resources/kickstart
+      "$ardkick" -activate -configure -clientopts -setvnclegacy -vnclegacy -no -setreqperm -reqperm no -setmenuextra -menuextra no
+      "$ardkick" -configure -users 'rfkadmin' -access -on -privs -all 
+      "$ardkick" -configure -allowAccessFor -specifiedUsers
+      "$ardkick" -restart -agent -menu
+
+      # Interactive user input for local airport code
+      airport=`$cocoadialog inputbox --title "Local Airport Code Required" --informative-text "Please enter the 3-digit code of the closest airport:" --button1 "OK" --float --no-cancel`
+      #button=`echo "${airport}" | awk 'NR>0{print $0}' | sed -e 's,.*(\([^<]*\)).*,\1,g'`;
+      StandardInputbox_Output=`echo "${airport}" | awk 'NR>1{print $1}' | sed -e 's,.*(\([^<]*\)).*,\1,g'`;
+
+      iatacode=`echo $StandardInputbox_Output | tr [a-z] [A-Z]`
+
+      # Set HostName, LocalHostName and ComputerName via scutil
+      scutil --set HostName "US$iatacode-$UserInLogged"
+      scutil --set LocalHostName "US$iatacode-$UserInLogged"
+      scutil --set ComputerName "US$iatacode-$UserInLogged"
 
       declare -xa APPS=('Charles.app' \
                         'Cisco/Cisco AnyConnect Secure Mobility Client.app' )
@@ -208,10 +238,33 @@ scripts=/Library/RFK/Software/bin/scpt
 
       # Interactive user input for script processing (in testing...)
       #ben=`$cocoadialog standard-inputbox --title "Information Required" --informative-text "Please enter your email address:"`
+      #ben=`$cocoadialog inputbox --title "GitHub Account Information Required" --informative-text "Please enter your email address:" --button1 "OK" --float`
       #button=`echo "${ben}" | awk 'NR>0{print $0}' | sed -e 's,.*(\([^<]*\)).*,\1,g'`;
       #StandardInputbox_Output=`echo "${ben}" | awk 'NR>1{print $1}' | sed -e 's,.*(\([^<]*\)).*,\1,g'`;
+      #jerry=`"$CocoaDialog" secure-standard-inputbox --title "GitHub Account Information Required" --informative-text "Please enter your password:" --string-output --float --icon "Info" --debug`
+      #button=`echo "${jerry}" | awk 'NR>0{print $0}' | sed -e 's,.*(\([^<]*\)).*,\1,g'`;
+      #SecureStandardInputBox_Output=`echo "${jerry}" | awk 'NR>1{print $1}' | sed -e 's,.*(\([^<]*\)).*,\1,g'`;
 
       #$cocoadialog bubble --debug --x-placement "left" --y-placement "center" --title "You Entered:" --text "$StandardInputbox_Output" --icon "info" --timeout "15"
+      #$cocoadialog bubble --debug --x-placement "left" --y-placement "center" --title "You Entered:" --text "$SecureStandardInputBox_Output" --icon "info" --timeout "15"
+
+      # Enabled Remote Management via ARDAgent.app/Contents/Resources/kickstart
+      "$ardkick" -activate -configure -clientopts -setvnclegacy -vnclegacy -no -setreqperm -reqperm no -setmenuextra -menuextra no
+      "$ardkick" -configure -users 'rfkadmin' -access -on -privs -all 
+      "$ardkick" -configure -allowAccessFor -specifiedUsers
+      "$ardkick" -restart -agent -menu
+
+      # Interactive user input for local airport code
+      airport=`$cocoadialog inputbox --title "Local Airport Code Required" --informative-text "Please enter the 3-digit code of the closest airport:" --button1 "OK" --float --no-cancel`
+      #button=`echo "${airport}" | awk 'NR>0{print $0}' | sed -e 's,.*(\([^<]*\)).*,\1,g'`;
+      StandardInputbox_Output=`echo "${airport}" | awk 'NR>1{print $1}' | sed -e 's,.*(\([^<]*\)).*,\1,g'`;
+
+      iatacode=`echo $StandardInputbox_Output | tr [a-z] [A-Z]`
+
+      # Set HostName, LocalHostName and ComputerName via scutil
+      scutil --set HostName "US$iatacode-$UserInLogged"
+      scutil --set LocalHostName "US$iatacode-$UserInLogged"
+      scutil --set ComputerName "US$iatacode-$UserInLogged"
 
       declare -xa APPS=('Charles.app' \
                         'Cisco/Cisco AnyConnect Secure Mobility Client.app' \
