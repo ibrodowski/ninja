@@ -4,12 +4,21 @@ set -x
 #
 #
 # Author          : Ian Brodowski
-# Latest Update   : Thursday, August 11, 2016
+# Latest Update   : Monday, August 15, 2016
 # 
 # Purpose         : Install third-party software that is not otherwise integrated within the RFK developer or standard image(s)
 #
 # Change History  :
-#   * 20160811    : Added ability to set computer name based IATA airport code and user's name
+#   * 20160815    : Corrected grammatical errors
+#                 : Added HP Printer Drivers
+#                 : Added lpadmin commands to install HP Printers from within the San Mateo HQ office
+#                 : Added defaults and lpoption commands to disable last used printer and set the default printer to HP_LaserJet_200_Color_MFP_276nw
+#                 : Added dock icons for IntelliJ IDEA CE, PyCharm CE and Robomongo for developer image
+#
+#   * 20160812    : Refined comments and notes for each section of the script
+#                 : Added ability to enable Remote Management Features using kickstart from ARDAgent.app
+#
+#   * 20160811    : Added ability to set computer name based IATA airport code and user's name (i.e., prompt's user for information)
 #                 : Added ability to enable Remote Management Features using kickstart from ARDAgent.app
 #                 : Added additional UI/UX test code for CocoaDialog for password handling and obfuscation during entry
 #                 : Added Terminal dock icon for Developer image
@@ -35,6 +44,11 @@ set -x
 #   * 20160801    : Updated postintall script for new release of Microsoft Office 2016 15.24 - 20160709
 #                 :   The lines that have been commented out are for reference purposes, should additional updates be released
 #
+
+#
+# Define Variables
+#
+
 pathToScript=$0
 pathToPackage=$1
 targetLocation=$2
@@ -52,11 +66,23 @@ cocoadialog=/Library/RFK/Software/bin/utils/CocoaDialog.app/Contents/MacOS/Cocoa
 dockutil=/Library/RFK/Software/bin/utils/dockutil
 scripts=/Library/RFK/Software/bin/scpt
 
+
+  #
+  # Set 'xcodeapp' as variable to determine if '/Applications/Xcode.app' exists
+  #
   xcodeapp="/Applications/Xcode.app"
 
     if [ -e "$xcodeapp" ]; then
 
-       # "Xcode has been found, assuming this a developer image..."
+       # "Xcode has been found, assuming this computer is running a corporate developer image..."
+
+       #
+       # If '/Applications/Xcode.app' exists then, install the following software in order:
+       #   • Cisco AnyConnect Secure Mobility Client (vpn_module.pkg)
+       #   • Cisco AnyConnect Secure Mobility Client Diagnostics and Reporting Tool (dart_module.pkg)
+       #   • BitDefender GravityZone Business Security
+       #   • Charles Proxy 3.11.5
+       #
 
        # "Installing Cisco AnyConnect Secure Mobility Client..."
       /usr/sbin/installer -pkg "/Library/RFK/Software/Cisco/vpn_module.pkg" -target $3
@@ -66,6 +92,19 @@ scripts=/Library/RFK/Software/bin/scpt
 
        # "Installing Bitdefender GravityZone Business Security..."
       /usr/sbin/installer -pkg "/Library/RFK/Software/Bitdefender/antivirus_for_mac.pkg" -target $3
+
+      # "Installing HP Printer Drivers"
+      /usr/sbin/installer -pkg "/Library/RFK/Software/HP/HewlettPackardPrinterDrivers.pkg" -target $3
+
+      # "Install HP LaserJet 200 Color MFP 276nw"
+      /usr/sbin/lpadmin -p "HP_LaserJet_200_Color_MFP_276nw" -E -v "lpd://10.7.10.45" -P /Library/Printers/PPDs/Contents/Resources/HP\ LaserJet\ 200\ color\ MFP\ M276.gz -D "HP LaserJet 200 Color MFP M276nw" -L "San Mateo HQ" -o printer-is-shared=false
+
+      # "Install HP LaserJet 500 Color M551"
+      /usr/sbin/lpadmin -p "HP_LaserJet_500_Color_M551" -E -v "lpd://10.7.1.108" -P /Library/Printers/PPDs/Contents/Resources/HP\ LaserJet\ 500\ color\ M551.gz -D "HP LaserJet 500 Color M551" -L "San Mateo HQ" -o printer-is-shared=false
+
+      # "Configure default printer"
+      /usr/bin/lpoptions -d HP_LaserJet_200_Color_MFP_276nw
+      /usr/bin/defaults write org.cups.PrintingPrefs UseLastPrinter -bool False
 
       # "Installing Charles Proxy..."
       yes | /usr/bin/hdiutil attach -nobrowse "/Library/RFK/Software/CharlesProxy/charles-proxy-3.11.5.dmg" > /dev/null
@@ -77,6 +116,10 @@ scripts=/Library/RFK/Software/bin/scpt
       /usr/sbin/chown $LoggedInUser:staff "/Applications/Charles.app"
       /usr/bin/security add-trusted-cert -d -r trustRoot -k "$HOMEDIR"/Library/Keychains/login.keychain "/Library/RFK/Software/CharlesProxy/charlesproxy.cer"
       /usr/bin/srm "/Library/RFK/Software/CharlesProxy/charlesproxy.cer"
+
+      #
+      # User Customizations
+      #
 
       # Set Desktop Picture to ReflektionInc.png
       /usr/bin/osascript "$scripts"/setdesktoppic.scpt
@@ -110,9 +153,21 @@ scripts=/Library/RFK/Software/bin/scpt
       sleep 2 # sleep for two seconds
 
       # Add Charles Proxy to dock
-      "$dockutil" --add '/Applications/Charles.app' --after 'Terminal' --no-restart
+      "$dockutil" --add '/Applications/Charles.app' --before 'System Preferences' --no-restart
       sleep 2 # sleep for two seconds
-          
+      
+      # Add IntelliJ IDEA CE to dock
+      "$dockutil" --add '/Applications/IntelliJ IDEA CE.app' --before 'Charles' --no-restart
+      sleep 2 # sleep for two seconds
+
+      # Add PyCharm CE to dock
+      "$dockutil" --add '/Applications/PyCharm CE.app' --after 'IntelliJ IDEA CE' --no-restart
+      sleep 2 # sleep for two seconds
+
+      # Add Robomongo to dock
+      "$dockutil" --add '/Applications/Robomongo.app' --after 'PyCharm CE' --no-restart
+      sleep 2 # sleep for two seconds
+
       # Add Cisco AnyConnect Secure Mobility Client to dock
       "$dockutil" --add '/Applications/Cisco/Cisco AnyConnect Secure Mobility Client.app' --after 'Charles'
 
@@ -127,6 +182,10 @@ scripts=/Library/RFK/Software/bin/scpt
 
       #$cocoadialog bubble --debug --x-placement "left" --y-placement "center" --title "You Entered:" --text "$StandardInputbox_Output" --icon "info" --timeout "15"
       #$cocoadialog bubble --debug --x-placement "left" --y-placement "center" --title "You Entered:" --text "$SecureStandardInputBox_Output" --icon "info" --timeout "15"
+
+      #
+      # System Customizations
+      #
 
       # Enabled Remote Management via ARDAgent.app/Contents/Resources/kickstart
       "$ardkick" -activate -configure -clientopts -setvnclegacy -vnclegacy -no -setreqperm -reqperm no -setmenuextra -menuextra no
@@ -146,6 +205,11 @@ scripts=/Library/RFK/Software/bin/scpt
       scutil --set LocalHostName "US$iatacode-$UserInLogged"
       scutil --set ComputerName "US$iatacode-$UserInLogged"
 
+      #
+      # Determine if the installed apps exist
+      #   » If the installed apps exist, then exit with 0
+      #   « If the installed apps do not exist, then exit with 1
+      #
       declare -xa APPS=('Charles.app' \
                         'Cisco/Cisco AnyConnect Secure Mobility Client.app' )
 
@@ -164,6 +228,15 @@ scripts=/Library/RFK/Software/bin/scpt
 
     else
 
+       #
+       # If '/Applications/Xcode.app' does not exist then, assuming this computer is running a corporate standard image, 
+       # installing the following software in order:
+       #   • Cisco AnyConnect Secure Mobility Client (vpn_module.pkg)
+       #   • Cisco AnyConnect Secure Mobility Client Diagnostics and Reporting Tool (dart_module.pkg)
+       #   • Microsoft Office 2016 for Mac 15.24
+       #   • Charles Proxy 3.11.5
+       #
+
        # "Xcode has not been found, assuming this is not a developer image..."
 
        # "Installing Cisco AnyConnect Secure Mobility Client..."
@@ -181,6 +254,19 @@ scripts=/Library/RFK/Software/bin/scpt
        # "Installing Microsoft Delta Update for Excel 15.23.0 to 15.23.1..."
       #/usr/sbin/installer -pkg "/Library/RFK/Software/Microsoft_Excel_15.23.0_160611_to_15.23.1_160617_Delta.pkg" -target $3
 
+      # "Installing HP Printer Drivers"
+      /usr/sbin/installer -pkg "/Library/RFK/Software/HP/HewlettPackardPrinterDrivers.pkg" -target $3
+
+      # "Install HP LaserJet 200 Color MFP 276nw"
+      /usr/sbin/lpadmin -p "HP_LaserJet_200_Color_MFP_276nw" -E -v "lpd://10.7.10.45" -P /Library/Printers/PPDs/Contents/Resources/HP\ LaserJet\ 200\ color\ MFP\ M276.gz -D "HP LaserJet 200 Color MFP M276nw" -L "San Mateo HQ" -o printer-is-shared=false
+
+      # "Install HP LaserJet 500 Color M551"
+      /usr/sbin/lpadmin -p "HP_LaserJet_500_Color_M551" -E -v "lpd://10.7.1.108" -P /Library/Printers/PPDs/Contents/Resources/HP\ LaserJet\ 500\ color\ M551.gz -D "HP LaserJet 500 Color M551" -L "San Mateo HQ" -o printer-is-shared=false
+
+      # "Configure default printer"
+      /usr/bin/lpoptions -d HP_LaserJet_200_Color_MFP_276nw
+      /usr/bin/defaults write org.cups.PrintingPrefs UseLastPrinter -bool False
+
       # "Installing Charles Proxy..."
       yes | /usr/bin/hdiutil attach -nobrowse "/Library/RFK/Software/CharlesProxy/charles-proxy-3.11.5.dmg" > /dev/null
       /bin/cp -R /Volumes/Charles\ Proxy\ v3.11.5/Charles.app "/Applications/"
@@ -191,6 +277,10 @@ scripts=/Library/RFK/Software/bin/scpt
       /usr/sbin/chown $LoggedInUser:staff "/Applications/Charles.app"
       /usr/bin/security add-trusted-cert -d -r trustRoot -k "$HOMEDIR"/Library/Keychains/login.keychain "/Library/RFK/Software/CharlesProxy/charlesproxy.cer"
       /usr/bin/srm "/Library/RFK/Software/CharlesProxy/charlesproxy.cer"
+
+      #
+      # User Customizations
+      #
 
       # Set Desktop Picture to ReflektionInc.png
       /usr/bin/osascript "$scripts"/setdesktoppic.scpt
@@ -248,6 +338,10 @@ scripts=/Library/RFK/Software/bin/scpt
       #$cocoadialog bubble --debug --x-placement "left" --y-placement "center" --title "You Entered:" --text "$StandardInputbox_Output" --icon "info" --timeout "15"
       #$cocoadialog bubble --debug --x-placement "left" --y-placement "center" --title "You Entered:" --text "$SecureStandardInputBox_Output" --icon "info" --timeout "15"
 
+      #
+      # System Customizations
+      #
+
       # Enabled Remote Management via ARDAgent.app/Contents/Resources/kickstart
       "$ardkick" -activate -configure -clientopts -setvnclegacy -vnclegacy -no -setreqperm -reqperm no -setmenuextra -menuextra no
       "$ardkick" -configure -users 'rfkadmin' -access -on -privs -all 
@@ -266,6 +360,11 @@ scripts=/Library/RFK/Software/bin/scpt
       scutil --set LocalHostName "US$iatacode-$UserInLogged"
       scutil --set ComputerName "US$iatacode-$UserInLogged"
 
+      #
+      # Determine if the installed apps exist
+      #   » If the installed apps exist, then exit with 0
+      #   « If the installed apps do not exist, then exit with 1
+      #
       declare -xa APPS=('Charles.app' \
                         'Cisco/Cisco AnyConnect Secure Mobility Client.app' \
                         'Microsoft Excel.app' \
