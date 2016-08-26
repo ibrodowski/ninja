@@ -3,7 +3,7 @@
 #
 # Original Author : Unknown
 # Current Author  : Ian Brodowski
-# Last Update     : Friday, August 18, 2016
+# Last Update     : Friday, August 19, 2016
 #
 # Change History  :
 #   * 20160819    : Modified detection of required installer packages
