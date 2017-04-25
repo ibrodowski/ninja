@@ -38,9 +38,6 @@ echo "currentButtonState = buttonState" >> /home/pi/scripts/shutdown.py
 echo "" >> /home/pi/scripts/shutdown.py
 echo "time.sleep(.1)" >> /home/pi/scripts/shutdown.py
 
-#printf "Adding ${GREEN}shutdown.py${NC} to run at ${BLUE}startup${NC} under ${RED}/etc/rc.local${NC}...\n"
-#sed -i $'/fi/a\# Enable Power Switch\\nsudo python /home/pi/scripts/shutdown.py &' /etc/rc.local
-
 printf "Creating ${GREEN}init.d${NC} service script ${RED}pi_shutdown${NC} under ${BLUE}/etc/init.d${NC}...\n"
 touch /etc/init.d/pi_shutdown
 
