@@ -3,21 +3,32 @@
 #
 # Original Author : Various People
 # Current Author  : Ian Brodowski (ibrodowski on GitHub https://github.com/ibrodowski/ninja/tree/master/RPi)
-# Last Update     : Tuesday, April 25, 2017
+# Last Update     : Sunday, April 30, 2017
 #
 # Description     : This script installs required apt-get packages and files to enable
-#					the use of a PC power or reset (momentary) switch to safely shutdown
-#					the Raspberry Pi.
+#		    the use of a PC power or reset (momentary) switch to safely shutdown
+#		    the Raspberry Pi.
+#
+#		    When the switch is used to safely shutdown the Raspberry Pi, it will continue to draw a few hundred milliamps.
 #					
-#					This script does not require an active internet connection and this code
-#					is availalble for your complete review.
+#		    This script does not require an active internet connection for the accompanying files (shutdown.py & 
+#		    pi_shutdown.  However, the mandatory python binaries require an active internet connection;
+#		    please review this code in its entirety prior to execution.
+#
+# Warranty	  : This script and its contents are provided AS IS without warranty of any kind.
+# Disclaimer
+#		    Ian Brodowski (@ibrodowski on GitHub) disclaims all implied warranties including, without limitation
+#		    any implied warranties of merchantability or of fitness for a particular purpose.
+#
+#		    The entire risk arising out of the use or performance of this script and documentation remains solely with you.
 #
 # Change History  :
+#   * 20170430    : Debugging and random grammatical corrections
+#                 : Added warranty disclaimer
+#
 #   * 20170425    : Debugging and random grammatical corrections
-#                 : Modified detection of required installer packages; renamed JDK and JRE packages
 #
 #   * 20170424    : Debugging and random grammatical corrections
-#                 : Modified detection of required installer packages; renamed JDK and JRE packages
 #
 
 #
